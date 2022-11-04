@@ -22,6 +22,7 @@ export type filterType = 'all' | 'active' | 'completed'
 
 function App() {
 
+    //DATA
     const [tasks, setTasks] = useState<ArrayTaskType>([
         {id: uuidv4(), title: 'HTML & CSS', isDone: true},
         {id: uuidv4(), title: 'Javascript', isDone: false},
@@ -29,6 +30,7 @@ function App() {
     ])
 
     const [filter, setFilter] = useState<filterType>('all')
+    const [error, setError] = useState<string | null>(null)
 
     const [btnInfo, setBtnInfo] = useState<ArrayBtnInfoType>([
         {id: uuidv4(), title: 'all'},
@@ -36,13 +38,19 @@ function App() {
         {id: uuidv4(), title: 'completed'},
     ])
 
+    //CRUD FUNCTION
     const addTask = (title: string) => {
+
+        if (title.trim().length === 0) {
+            setError('Введите название!')
+            return
+        }
+
         const task = {
             id: uuidv4(),
             title,
             isDone: false
         }
-
         setTasks([...tasks, task])
     }
 
@@ -54,6 +62,7 @@ function App() {
     const changeFilter = (item: filterType) => {
         setFilter(item)
     }
+
 
     const filteredTasks = (initialTasks: ArrayTaskType, filter: filterType): ArrayTaskType  => {
         switch (filter) {
@@ -71,11 +80,25 @@ function App() {
     const alreadyFilteredTask = filteredTasks(tasks, filter)
 
 
+    const checkedTask = (id: string) => {
+
+        const task = tasks.find(item => item.id === id)
+
+        if (task) {
+           task.isDone = !task.isDone
+        }
+
+        setTasks([...tasks])
+    }
+
     return (
         <div className="App">
             <TodoList
                 title={'What to learn'}
                 tasks={alreadyFilteredTask}
+                error={error}
+                setError={setError}
+                checkedTask={checkedTask}
                 btnInfo={btnInfo}
                 filter={filter}
                 changeFilter={changeFilter}

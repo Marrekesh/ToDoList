@@ -1,0 +1,12 @@
+
+.errorInput {
+    border: 1px solid red;
+}
+
+.errorText {
+    color: red;
+}
+
+.btnActive {
+    background-color: aqua;
+}
