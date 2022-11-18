@@ -3,26 +3,32 @@ import {ArrayBtnInfoType, ArrayTaskType} from "../App/App";
 import {useState} from "react";
 import {filterType} from "../App/App";
 import Button from "../button/Button";
+import AddItemForm from "../addItemForm/AddItemForn";
+import EditSpan from "../editSpan/EditSpan";
+
 import c from "./todoList.module.css";
 const { v4: uuidv4 } = require('uuid');
 
+
 type ToDoPropsType = {
+    todoId: string
     title: string
-    error: string | null
-    setError: (item: string | null) => void
     tasks: ArrayTaskType
     filter: filterType
-    changeFilter: (item: filterType) => void
+    changeFilter: (item: filterType, todolistId: string) => void
     btnInfo: ArrayBtnInfoType
-    addTask: (title: string) => void
-    removeTasks: (id: string) => void
-    checkedTask: (id: string) => void
+    addTask: (title: string, todolistId: string) => void
+    removeTasks: (id: string, todolistId: string) => void
+    checkedTask: (id: string, todolistId: string) => void
+    deleteTodos: (id: string) => void
+    changeTaskTitle:(id: string, title: string, todoId: string) => void
 
 }
 
 const TodoList = (
     {
         tasks,
+        todoId,
         title,
         addTask,
         removeTasks,
@@ -30,28 +36,22 @@ const TodoList = (
         btnInfo,
         changeFilter,
         checkedTask,
-        error,
-        setError
+        deleteTodos,
+        changeTaskTitle
     }: ToDoPropsType
 ) => {
 
-    const [taskTitle, setTaskTitle] = useState('')
-
-    //handler functions
-    const taskTextHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        setError(null)
-        setTaskTitle(e.target.value)
+    const addTaskHandler = (title: string) => {
+        addTask(title, todoId)
     }
-
-    const addTaskHandler = () => {
-        addTask(taskTitle)
-        setTaskTitle('')
-    }
-
     //list items
     const tasksList = tasks.map((item) => {
-        const checkedTaskHandler = () => checkedTask(item.id)
-        const removeTaskHandler = () => removeTasks(item.id)
+        const checkedTaskHandler = () => checkedTask(item.id, todoId)
+        const removeTaskHandler = () => removeTasks(item.id, todoId)
+
+        const changStatusEditSpan = (title: string) => {
+            changeTaskTitle(item.id ,title, todoId)
+        }
 
         return <li key={item.id}>
             <input
@@ -59,7 +59,7 @@ const TodoList = (
                 checked={item.isDone}
                 onChange={checkedTaskHandler}
             />
-            <span>{item.title}</span>
+            <EditSpan callback={changStatusEditSpan} title={item.title}/>
             <button onClick={removeTaskHandler}>x</button>
         </li>
     })
@@ -68,26 +68,21 @@ const TodoList = (
 
 
     const btnInfoList = btnInfo.map(item => {
-        const changeFilterHandler = () => changeFilter(item.title)
+        const changeFilterHandler = () => changeFilter(item.title, todoId)
         const btnClasses = filter === item.title ? c.btnActive : ''
         return <button className={btnClasses} onClick={changeFilterHandler} key={item.id}>{item.title}</button>
     })
 
-    //classes
-    const errorInputClass = error ? c.errorInput : ''
-
-    //error text block
-
-    const errorBlock = error ? <div className={c.errorText}>{error}</div> : null
+    //delete task
+    const deleteTaskHandler = () => deleteTodos(todoId)
 
     return (
         <div>
-            <h3>{title}</h3>
-            <div>
-                <input className={errorInputClass} value={taskTitle} onChange={taskTextHandler}/>
-                <button onClick={addTaskHandler}>+</button>
-            </div>
-            {errorBlock}
+            <h3>{title}
+                <button onClick={deleteTaskHandler}>X</button>
+            </h3>
+
+            <AddItemForm addItem={addTaskHandler}/>
             <ul>
                 {viewTaskList}
             </ul>
