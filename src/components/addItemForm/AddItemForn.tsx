@@ -1,4 +1,5 @@
-import React, {ChangeEvent, useState} from 'react';
+import React, {ChangeEvent, useMemo, useState} from 'react';
+import {TextField, IconButton} from "@mui/material";
 
 import c from './addItemForm.module.css'
 
@@ -10,8 +11,12 @@ const AddItemForm = ({addItem}: AddItemFormType) => {
 
     const [title, setTitle] = useState('')
     const [error, setError] = useState<string | null>(null)
+    // const memoTitle = useMemo(() => {
+    //     taskTextHandler()
+    // }, [])
 
     const taskTextHandler = (e: ChangeEvent<HTMLInputElement>) => {
+        console.log("pereresovano")
         setError(null)
         setTitle(e.target.value)
     }
@@ -31,10 +36,17 @@ const AddItemForm = ({addItem}: AddItemFormType) => {
     return (
         <div className={c.addItemForm}>
             <div>
-                <input className={errorInputClass} value={title} onChange={taskTextHandler}/>
-                <button onClick={addTaskHandler}>+</button>
+                <TextField
+                    variant='outlined'
+                    className={errorInputClass}
+                    value={title}
+                    onChange={taskTextHandler}
+                    error={!!error}
+                    helperText={error}
+                />
+                <IconButton color='primary' onClick={addTaskHandler}>+</IconButton>
             </div>
-            {errorBlock}
+            {/*{errorBlock}*/}
         </div>
     );
 };

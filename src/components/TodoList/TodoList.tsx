@@ -2,10 +2,13 @@ import React, {ChangeEvent} from 'react';
 import {ArrayBtnInfoType, ArrayTaskType} from "../App/App";
 import {useState} from "react";
 import {filterType} from "../App/App";
-import Button from "../button/Button";
+import {Button, Checkbox} from "@mui/material";
+import Btn from "../button/Button";
+
 import AddItemForm from "../addItemForm/AddItemForn";
 import EditSpan from "../editSpan/EditSpan";
-
+import { Delete } from '@mui/icons-material'
+import { IconButton } from '@mui/material'
 import c from "./todoList.module.css";
 const { v4: uuidv4 } = require('uuid');
 
@@ -53,24 +56,32 @@ const TodoList = (
             changeTaskTitle(item.id ,title, todoId)
         }
 
-        return <li key={item.id}>
-            <input
-                type="checkbox"
+        return <div key={item.id}>
+            <Checkbox
+                color='primary'
                 checked={item.isDone}
                 onChange={checkedTaskHandler}
             />
             <EditSpan callback={changStatusEditSpan} title={item.title}/>
-            <button onClick={removeTaskHandler}>x</button>
-        </li>
+            <IconButton  onClick={removeTaskHandler}>
+                <Delete/>
+            </IconButton>
+        </div>
     })
 
     const viewTaskList = tasksList.length ? tasksList : <div>Нет тасок</div>
-
+    const AddItemFormMemo = React.memo(AddItemForm)
 
     const btnInfoList = btnInfo.map(item => {
         const changeFilterHandler = () => changeFilter(item.title, todoId)
         const btnClasses = filter === item.title ? c.btnActive : ''
-        return <button className={btnClasses} onClick={changeFilterHandler} key={item.id}>{item.title}</button>
+        return <Button variant="contained"
+                       className={btnClasses}
+                       onClick={changeFilterHandler}
+                       color={filter === item.title ? 'secondary' : 'primary'}
+                       key={item.id}
+                        >{item.title}
+                </Button>
     })
 
     //delete task
@@ -79,13 +90,15 @@ const TodoList = (
     return (
         <div>
             <h3>{title}
-                <button onClick={deleteTaskHandler}>X</button>
+                <IconButton onClick={deleteTaskHandler}>
+                    <Delete/>
+                </IconButton>
             </h3>
 
-            <AddItemForm addItem={addTaskHandler}/>
-            <ul>
+            <AddItemFormMemo addItem={addTaskHandler}/>
+            <div>
                 {viewTaskList}
-            </ul>
+            </div>
             <div>
                 {btnInfoList}
             </div>
