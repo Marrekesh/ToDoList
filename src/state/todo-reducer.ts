@@ -22,12 +22,18 @@ export const todoReducer = (state: Array<TodoType> = initialState, action: Actio
             }]
         }
         case 'CHANGE-FILTER-TODO': {
-            const todolist = state.find(item => item.id === action.id)
-            if (todolist) {
-                todolist.filter = action.filter
-            }
-
-            return [...state]
+            // const todolist = state.find(item => item.id === action.id)
+            // if (todolist) {
+            //     todolist.filter = action.filter
+            // }
+            //
+            // return [...state]
+            return state.map(item => {
+                if (item.id === action.id) {
+                    return {...item, filter: action.filter}
+                }
+                return {...item}
+            })
         }
         default:
             return state

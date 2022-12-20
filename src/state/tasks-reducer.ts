@@ -19,52 +19,68 @@ const initialState: TaskStateType = {
 export const taskReducer = (state:TaskStateType = initialState, action: ActionTaskType): TaskStateType => {
     switch (action.type) {
         case 'ADD-TASK': {
-            const newState = {...state}
+            // const newState = {...state}
             const newTask = {id: uuidv4(), title: action.title, isDone: false}
-            let tasksArr = newState[action.todoId]
-            newState[action.todoId] = [newTask, ...tasksArr]
-            return newState
+            // let tasksArr = newState[action.todoId]
+            // newState[action.todoId] = [newTask, ...tasksArr]
+            // return newState
+            return {...state, [action.todoId]: [newTask, ...state[action.todoId]]}
         }
         case "REMOVE-TASK": {
-            const newState = {...state}
-            let tasksArr = newState[action.todoId]
-            newState[action.todoId] = tasksArr.filter(item => item.id !== action.id)
-            return newState
+            // const newState = {...state}
+            // let tasksArr = newState[action.todoId]
+            // newState[action.todoId] = tasksArr.filter(item => item.id !== action.id)
+            // return newState
+            return {...state, [action.todoId]: state[action.todoId].filter(item => item.id !== action.id)}
         }
         case "CHANGE-TASK-CHECKED": {
-            const newState = {...state}
-            let tasksArr = newState[action.todoId]
-
-            const task = tasksArr.find(item => item.id === action.id)
-
-            if (task) {
-                task.isDone = !task.isDone
-            }
-
-            return newState
+            // const newState = {...state}
+            // let tasksArr = newState[action.todoId]
+            //
+            // const task = tasksArr.find(item => item.id === action.id)
+            //
+            // if (task) {
+            //     task.isDone = !task.isDone
+            // }
+            //
+            // return newState
+            return {...state, [action.todoId]: state[action.todoId].map(item => {
+                    if (item.id === action.id) {
+                        return {...item, isDone: !item.isDone}
+                    }
+                    return {...item}
+                })}
         }
         case "CHANGE-TASK-TITLE": {
-            const newState = {...state}
-            let tasksArr = newState[action.todoId]
-
-            const task = tasksArr.find(item => item.id === action.id)
-
-            if (task) {
-                task.title = action.title
-            }
-
-            return newState
+            // const newState = {...state}
+            // let tasksArr = newState[action.todoId]
+            //
+            // const task = tasksArr.find(item => item.id === action.id)
+            //
+            // if (task) {
+            //     task.title = action.title
+            // }
+            //
+            // return newState
+            return {...state, [action.todoId]: state[action.todoId].map(item => {
+                    if (item.id === action.id) {
+                        return {...item, title: action.title}
+                    }
+                    return {...item}
+                })}
 
         }
         case "ADD-TODO": {
-            const newState = {...state}
-            newState[action.todoId] = []
-            return newState
+            // const newState = {...state}
+            // newState[action.todoId] = []
+            // return newState
+            return {...state, [action.todoId]: []}
         }
         case "DELETE-TODO": {
             const newState = {...state}
             delete newState[action.id]
             return newState
+
         }
         default:
             return state
