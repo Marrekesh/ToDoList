@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import './App.css';
 import {useState, useReducer} from "react";
 import TodoList from "../TodoList/TodoList";
@@ -55,7 +55,6 @@ function AppWithRedux() {
 
     const dispatch = useAppDispatch()
     const todos = useAppSelector(state => state.todo)
-    const tasks = useAppSelector(state => state.task)
 
     const [btnInfo, setBtnInfo] = useState<ArrayBtnInfoType>([
         {id: uuidv4(), title: 'all'},
@@ -64,48 +63,26 @@ function AppWithRedux() {
     ])
 
     //CRUD FUNCTION
-    const addTask = (title: string, todolistId: string) => {
 
-        const action = addTaskAction(title, todolistId)
-        dispatch(action)
-    }
 
-    const addTodoList = (title: string) => {
+    const addTodoList = useCallback((title: string) => {
 
         const action = addTodoAction(title)
         dispatch(action)
 
 
-    }
+    }, [dispatch])
 
-    const removeTask = (id: string, todolistId: string) => {
-
-        const action = removeTaskAction(id, todolistId)
-        dispatch(action)
-
-    }
-
-    const changeFilter = (item: filterType, todolistId: string) => {
+    const changeFilter = useCallback((item: filterType, todolistId: string) => {
         const action = changeFilterTodoAction(todolistId, item)
         dispatch(action)
-    }
+    }, [dispatch])
 
-
-    const checkedTask = (id: string, todolistId: string) => {
-        const action = changeTaskChecked(id, todolistId)
-        dispatch(action)
-    }
-
-    const changeTaskTitle = (id: string, title: string, todolistId: string) => {
-        const action = changeTitleTaskAction(title, id, todolistId)
-        dispatch(action)
-    }
-
-    const deleteTodos = (id: string) => {
+    const deleteTodos = useCallback((id: string) => {
         const action = deleteTodoAction(id)
         dispatch(action)
 
-    }
+    }, [dispatch])
 
     return (
         <div className="App">
@@ -132,16 +109,6 @@ function AppWithRedux() {
                 <Grid container spacing={3}>
                     {
                         todos.map(todo => {
-                            let allTodolistTasks = tasks[todo.id]
-                            let tasksForToDoList = allTodolistTasks
-
-                            if (todo.filter === 'active') {
-                                tasksForToDoList = allTodolistTasks.filter(tasks => !tasks.isDone)
-                            }
-
-                            if (todo.filter === 'completed') {
-                                tasksForToDoList = allTodolistTasks.filter(tasks => tasks.isDone)
-                            }
 
                             return (
                                 <Grid item>
@@ -150,20 +117,13 @@ function AppWithRedux() {
                                             key={todo.id}
                                             todoId={todo.id}
                                             title={todo.title}
-                                            tasks={tasksForToDoList}
-                                            checkedTask={checkedTask}
                                             btnInfo={btnInfo}
                                             filter={todo.filter}
                                             changeFilter={changeFilter}
-                                            addTask={addTask}
-                                            removeTasks={removeTask}
                                             deleteTodos={deleteTodos}
-                                            changeTaskTitle={changeTaskTitle}
                                         />
                                     </Paper>
-
                                 </Grid>
-
                             )
                         })
                     }

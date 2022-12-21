@@ -32,7 +32,7 @@ export const todoReducer = (state: Array<TodoType> = initialState, action: Actio
                 if (item.id === action.id) {
                     return {...item, filter: action.filter}
                 }
-                return {...item}
+                return item
             })
         }
         default:

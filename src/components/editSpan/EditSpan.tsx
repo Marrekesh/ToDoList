@@ -5,8 +5,8 @@ type EditSpanType = {
     callback: (title: string) => void
 }
 
-const EditSpan = ({title, callback}: EditSpanType) => {
-
+const EditSpan = React.memo(({title, callback}: EditSpanType) => {
+    console.log('edit span')
     const [textTitle, setTextTitle] = useState<string>('')
     const [editMode, setEditMode] = useState<boolean>(false)
 
@@ -27,6 +27,6 @@ const EditSpan = ({title, callback}: EditSpanType) => {
     return editMode
         ? <input onChange={setTextTitleHandler} onBlur={activeViewMode} value={textTitle} autoFocus/>
         : <span onDoubleClick={activeEditMode}>{title}</span>
-};
+});
 
 export default EditSpan;

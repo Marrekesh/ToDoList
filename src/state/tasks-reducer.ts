@@ -48,7 +48,7 @@ export const taskReducer = (state:TaskStateType = initialState, action: ActionTa
                     if (item.id === action.id) {
                         return {...item, isDone: !item.isDone}
                     }
-                    return {...item}
+                    return item
                 })}
         }
         case "CHANGE-TASK-TITLE": {
@@ -66,7 +66,7 @@ export const taskReducer = (state:TaskStateType = initialState, action: ActionTa
                     if (item.id === action.id) {
                         return {...item, title: action.title}
                     }
-                    return {...item}
+                    return item
                 })}
 
         }

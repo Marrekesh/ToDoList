@@ -7,17 +7,16 @@ type AddItemFormType = {
     addItem: (title: string) => void
 }
 
-const AddItemForm = ({addItem}: AddItemFormType) => {
-
+const AddItemForm = React.memo(({addItem}: AddItemFormType) => {
+    console.log('AddItemForm')
     const [title, setTitle] = useState('')
     const [error, setError] = useState<string | null>(null)
-    // const memoTitle = useMemo(() => {
-    //     taskTextHandler()
-    // }, [])
+
 
     const taskTextHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        console.log("pereresovano")
-        setError(null)
+        if (error !== null) {
+            setError(null)
+        }
         setTitle(e.target.value)
     }
 
@@ -49,6 +48,6 @@ const AddItemForm = ({addItem}: AddItemFormType) => {
             {/*{errorBlock}*/}
         </div>
     );
-};
+});
 
 export default AddItemForm;

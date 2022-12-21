@@ -1,76 +1,62 @@
-import React, {ChangeEvent} from 'react';
-import {ArrayBtnInfoType, ArrayTaskType} from "../App/App";
+import React, {ChangeEvent, useCallback} from 'react';
+import {ArrayBtnInfoType, ArrayTaskType} from "../App/AppWithRedux";
 import {useState} from "react";
-import {filterType} from "../App/App";
+import {filterType} from "../App/AppWithRedux";
 import {Button, Checkbox} from "@mui/material";
 import Btn from "../button/Button";
-
+import Tasks from "../tasks/Tasks";
 import AddItemForm from "../addItemForm/AddItemForn";
 import EditSpan from "../editSpan/EditSpan";
 import { Delete } from '@mui/icons-material'
 import { IconButton } from '@mui/material'
 import c from "./todoList.module.css";
+import {addTaskAction, changeTaskChecked, changeTitleTaskAction, removeTaskAction} from "../../state/types";
+import {useAppDispatch, useAppSelector} from "../../hooks/reduxHooks";
 const { v4: uuidv4 } = require('uuid');
 
 
 type ToDoPropsType = {
     todoId: string
     title: string
-    tasks: ArrayTaskType
     filter: filterType
     changeFilter: (item: filterType, todolistId: string) => void
     btnInfo: ArrayBtnInfoType
-    addTask: (title: string, todolistId: string) => void
-    removeTasks: (id: string, todolistId: string) => void
-    checkedTask: (id: string, todolistId: string) => void
     deleteTodos: (id: string) => void
-    changeTaskTitle:(id: string, title: string, todoId: string) => void
 
 }
 
-const TodoList = (
+const TodoList = React.memo((
     {
-        tasks,
         todoId,
         title,
-        addTask,
-        removeTasks,
         filter,
         btnInfo,
         changeFilter,
-        checkedTask,
         deleteTodos,
-        changeTaskTitle
+
     }: ToDoPropsType
 ) => {
+    console.log('Todo render')
+    const tasks = useAppSelector(state => state.task[todoId])
+    const dispatch = useAppDispatch()
 
-    const addTaskHandler = (title: string) => {
-        addTask(title, todoId)
+
+    const addTaskHandler = useCallback((title: string) => {
+        const action = addTaskAction(title, todoId)
+        dispatch(action)
+    }, [dispatch, todoId])
+
+    let allTodolistTasks = tasks
+    let tasksForToDoList = allTodolistTasks
+
+    if (filter === 'active') {
+        tasksForToDoList = allTodolistTasks.filter(tasks => !tasks.isDone)
     }
-    //list items
-    const tasksList = tasks.map((item) => {
-        const checkedTaskHandler = () => checkedTask(item.id, todoId)
-        const removeTaskHandler = () => removeTasks(item.id, todoId)
 
-        const changStatusEditSpan = (title: string) => {
-            changeTaskTitle(item.id ,title, todoId)
-        }
+    if (filter === 'completed') {
+        tasksForToDoList = allTodolistTasks.filter(tasks => tasks.isDone)
+    }
 
-        return <div key={item.id}>
-            <Checkbox
-                color='primary'
-                checked={item.isDone}
-                onChange={checkedTaskHandler}
-            />
-            <EditSpan callback={changStatusEditSpan} title={item.title}/>
-            <IconButton  onClick={removeTaskHandler}>
-                <Delete/>
-            </IconButton>
-        </div>
-    })
-
-    const viewTaskList = tasksList.length ? tasksList : <div>Нет тасок</div>
-    const AddItemFormMemo = React.memo(AddItemForm)
 
     const btnInfoList = btnInfo.map(item => {
         const changeFilterHandler = () => changeFilter(item.title, todoId)
@@ -95,15 +81,22 @@ const TodoList = (
                 </IconButton>
             </h3>
 
-            <AddItemFormMemo addItem={addTaskHandler}/>
+            <AddItemForm addItem={addTaskHandler}/>
             <div>
-                {viewTaskList}
+                {   tasksForToDoList.length ?
+
+                    tasksForToDoList.map((task) => {
+                       return <Tasks key={task.id} id={task.id} todoId={todoId} isDone={task.isDone} title={task.title}/>
+                    })
+                    : <div>Нет тасок</div>
+
+                }
             </div>
             <div>
                 {btnInfoList}
             </div>
         </div>
     );
-};
+});
 
 export default TodoList;
