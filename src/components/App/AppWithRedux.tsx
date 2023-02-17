@@ -1,9 +1,9 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import './App.css';
 import {useState, useReducer} from "react";
 import TodoList from "../TodoList/TodoList";
 import {taskReducer} from "../../state/tasks-reducer";
-import {todoReducer} from "../../state/todo-reducer";
+import {fetchTodoListThunk, todoReducer} from "../../state/todo-reducer";
 import AddItemForm from "../addItemForm/AddItemForn";
 import {
     addTodoAction,
@@ -12,12 +12,12 @@ import {
     changeTaskChecked,
     changeFilterTodoAction,
     deleteTodoAction,
-    changeTitleTaskAction
+    changeTitleTaskAction, setTodolistsAC
 } from "../../state/types";
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@mui/material";
 import {Menu} from "@mui/icons-material";
 import {useAppDispatch, useAppSelector} from "../../hooks/reduxHooks";
-
+import {todoListApi} from "../../serverApi/todoListsApi";
 
 const { v4: uuidv4 } = require('uuid');
 
@@ -53,6 +53,11 @@ function AppWithRedux() {
 
     //DATA
 
+    useEffect(() => {
+        dispatch(fetchTodoListThunk)
+
+    }, [])
+
     const dispatch = useAppDispatch()
     const todos = useAppSelector(state => state.todo)
 
@@ -69,7 +74,6 @@ function AppWithRedux() {
 
         const action = addTodoAction(title)
         dispatch(action)
-
 
     }, [dispatch])
 
@@ -108,6 +112,7 @@ function AppWithRedux() {
                 </Grid>
                 <Grid container spacing={3}>
                     {
+                        todos.length === 0 ? <div>Нет туду листов</div> :
                         todos.map(todo => {
 
                             return (

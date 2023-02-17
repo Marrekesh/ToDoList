@@ -36,7 +36,6 @@ const TodoList = React.memo((
 
     }: ToDoPropsType
 ) => {
-    console.log('Todo render')
     const tasks = useAppSelector(state => state.task[todoId])
     const dispatch = useAppDispatch()
 

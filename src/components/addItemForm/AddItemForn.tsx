@@ -8,7 +8,6 @@ type AddItemFormType = {
 }
 
 const AddItemForm = React.memo(({addItem}: AddItemFormType) => {
-    console.log('AddItemForm')
     const [title, setTitle] = useState('')
     const [error, setError] = useState<string | null>(null)
 

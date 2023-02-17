@@ -1,20 +1,33 @@
 import {TaskStateType} from "./types";
 import {ActionTaskType} from "./types";
 import {todolistID1, todolistID2} from "../components/App/AppWithRedux";
+import {todoListApi} from "../serverApi/todoListsApi";
+import {AppDispatch} from "./store/store";
+import {setTaskAC} from "./types";
+
+
 const { v4: uuidv4 } = require('uuid');
 
+// const initialState: TaskStateType = {
+//     [todolistID1]: [
+//         {id: uuidv4(), title: 'HTML&CSS', isDone: true},
+//         {id: uuidv4(), title: 'JS', isDone: true},
+//         {id: uuidv4(), title: 'ReactJS', isDone: false},
+//     ],
+//     [todolistID2]: [
+//         {id: uuidv4(), title: 'Rest API', isDone: true},
+//         {id: uuidv4(), title: 'GraphQL', isDone: false},
+//     ]
+// }
+export const fetchTasksThunk = (todolistId: string) => (dispatch: AppDispatch) => {
 
-const initialState: TaskStateType = {
-    [todolistID1]: [
-        {id: uuidv4(), title: 'HTML&CSS', isDone: true},
-        {id: uuidv4(), title: 'JS', isDone: true},
-        {id: uuidv4(), title: 'ReactJS', isDone: false},
-    ],
-    [todolistID2]: [
-        {id: uuidv4(), title: 'Rest API', isDone: true},
-        {id: uuidv4(), title: 'GraphQL', isDone: false},
-    ]
+    todoListApi.getTasks(todolistId)
+        .then((res) => {
+            const tasks = res.data.items
+            dispatch(setTaskAC(tasks, todolistId))
+        })
 }
+const initialState: TaskStateType = {}
 
 export const taskReducer = (state:TaskStateType = initialState, action: ActionTaskType): TaskStateType => {
     switch (action.type) {
@@ -81,6 +94,18 @@ export const taskReducer = (state:TaskStateType = initialState, action: ActionTa
             delete newState[action.id]
             return newState
 
+        }
+        case 'SET-TODOLISTS': {
+            const stateCopy = {...state}
+            action.todoLists.forEach((tl) => {
+                stateCopy[tl.id] = []
+            })
+            return stateCopy;
+        }
+        case 'SET-TASKS': {
+            const stateCopy = {...state}
+            stateCopy[action.todolistId] = action.tasks
+            return stateCopy
         }
         default:
             return state

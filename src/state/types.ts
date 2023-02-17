@@ -12,6 +12,8 @@
 // export type TaskStateType = {
 //     [key: string]: ArrayTaskType
 // }
+import {fetchTodoListThunk} from "./todo-reducer";
+
 const { v4: uuidv4 } = require('uuid');
 export type TodoType = {
     id: string
@@ -44,11 +46,21 @@ export type ChangeFilterActionType = {
     filter: filterType
 }
 
+
+export type SetTodolistsActionType = {
+    type: 'SET-TODOLISTS'
+    todoLists: Array<TodoType>
+}
+
 //ACTION TYPES
 
-export type ActionType = RemoveTodoActionType | AddTodoActionType | ChangeFilterActionType
+// @ts-ignore
+export type ActionType = RemoveTodoActionType | AddTodoActionType | ChangeFilterActionType | SetTodolistsActionType | fetchTodoListThunk
 
 //ACTIONS CREATORS
+export const setTodolistsAC = (todoLists: Array<TodoType>): SetTodolistsActionType => {
+    return {type: 'SET-TODOLISTS', todoLists}
+}
 export const deleteTodoAction = (id: string): RemoveTodoActionType => {
     return {type: 'DELETE-TODO', id}
 }
@@ -99,12 +111,20 @@ type ChangeTitleTaskType = {
     todoId: string
 }
 
+export type SetTasksActionType = {
+    type: 'SET-TASKS'
+    tasks: ArrayTaskType
+    todolistId: string
+}
+
 export type ActionTaskType = AddTaskType
                             | RemoveTaskType
                             | ChangeTaskChecked
                             | AddTodoActionType
                             | RemoveTodoActionType
                             | ChangeTitleTaskType
+                            | SetTodolistsActionType
+                            | SetTasksActionType
 
 // actions task creator
 
@@ -123,3 +143,7 @@ export const changeTaskChecked = (id: string, todoId: string): ChangeTaskChecked
 export const changeTitleTaskAction = (title: string, id: string, todoId: string): ChangeTitleTaskType => {
     return {type: 'CHANGE-TASK-TITLE', title, id, todoId}
 }
+export const setTaskAC = (tasks: ArrayTaskType, todolistId: string): SetTasksActionType => {
+    return {type: 'SET-TASKS', tasks, todolistId}
+}
+
