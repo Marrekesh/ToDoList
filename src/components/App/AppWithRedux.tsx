@@ -53,10 +53,7 @@ function AppWithRedux() {
 
     //DATA
 
-    useEffect(() => {
-        dispatch(fetchTodoListThunk)
 
-    }, [])
 
     const dispatch = useAppDispatch()
     const todos = useAppSelector(state => state.todo)
@@ -88,6 +85,10 @@ function AppWithRedux() {
 
     }, [dispatch])
 
+    useEffect(() => {
+        dispatch(fetchTodoListThunk)
+
+    }, [])
     return (
         <div className="App">
             <AppBar position="static">

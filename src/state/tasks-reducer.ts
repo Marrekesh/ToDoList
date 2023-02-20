@@ -4,6 +4,7 @@ import {todolistID1, todolistID2} from "../components/App/AppWithRedux";
 import {todoListApi} from "../serverApi/todoListsApi";
 import {AppDispatch} from "./store/store";
 import {setTaskAC} from "./types";
+import {Dispatch} from "redux";
 
 
 const { v4: uuidv4 } = require('uuid');
@@ -19,7 +20,7 @@ const { v4: uuidv4 } = require('uuid');
 //         {id: uuidv4(), title: 'GraphQL', isDone: false},
 //     ]
 // }
-export const fetchTasksThunk = (todolistId: string) => (dispatch: AppDispatch) => {
+export const fetchTasksThunk = (todolistId: string) => (dispatch: Dispatch) => {
 
     todoListApi.getTasks(todolistId)
         .then((res) => {

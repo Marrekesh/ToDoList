@@ -1,8 +1,8 @@
 import {setTodolistsAC, TodoType} from "./types";
 import {ActionType} from "./types";
 import {todolistID1, todolistID2} from "../components/App/AppWithRedux";
-import {AppDispatch} from "./store/store";
 import {todoListApi} from "../serverApi/todoListsApi";
+import {Dispatch} from "redux";
 
 const { v4: uuidv4 } = require('uuid');
 
@@ -12,7 +12,7 @@ const { v4: uuidv4 } = require('uuid');
 //     {id: todolistID2, title: 'What to buy', filter: 'all'},
 // ]
 
-export const fetchTodoListThunk = (dispatch: AppDispatch) => {
+export const fetchTodoListThunk = (dispatch: Dispatch) => {
     todoListApi.getTodoLists()
         .then(res => {
             dispatch(setTodolistsAC(res.data))

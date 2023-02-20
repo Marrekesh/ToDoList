@@ -55,7 +55,7 @@ export type SetTodolistsActionType = {
 //ACTION TYPES
 
 // @ts-ignore
-export type ActionType = RemoveTodoActionType | AddTodoActionType | ChangeFilterActionType | SetTodolistsActionType | fetchTodoListThunk
+export type ActionType = RemoveTodoActionType | AddTodoActionType | ChangeFilterActionType | SetTodolistsActionType
 
 //ACTIONS CREATORS
 export const setTodolistsAC = (todoLists: Array<TodoType>): SetTodolistsActionType => {
