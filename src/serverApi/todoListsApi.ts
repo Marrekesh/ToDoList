@@ -1,5 +1,4 @@
 import axios from "axios";
-import {TodoType} from "../state/types";
 
 const settings = {
     withCredentials: true,
@@ -12,11 +11,22 @@ export const todoListApi = {
     getTodoLists() {
         return axios.get(`https://social-network.samuraijs.com/api/1.1/todo-lists`, settings)
     },
-    postTodoLists() {
-        return axios.post(`https://social-network.samuraijs.com/api/1.1/todo-lists`,{title: 'React&Redux', filter: 'all'}, settings)
+    postTodoLists(title: string) {
+        return axios.post(`https://social-network.samuraijs.com/api/1.1/todo-lists`,{title, filter: 'all'}, settings)
 
     },
+    deleteTodo(todolistId: string) {
+        return axios.delete(`https://social-network.samuraijs.com/api/1.1/todo-lists/${todolistId}`, settings)
+    },
     getTasks(todolistId: any) {
-        return axios.get(`https://social-network.samuraijs.com/api/1.1/todo-lists/${todolistId}`)
+        return axios.get(`https://social-network.samuraijs.com/api/1.1/todo-lists/${todolistId}/tasks`, settings)
+    },
+    postTask(title: string, todolistId: string) {
+        return axios.post(
+            `https://social-network.samuraijs.com/api/1.1/todo-lists/${todolistId}/tasks`,
+            {title},
+            settings
+            )
     }
+
 }

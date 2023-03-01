@@ -1,5 +1,5 @@
-import {todoReducer} from "./todo-reducer";
-import {addTaskAction, changeTaskChecked, removeTaskAction, changeTitleTaskAction} from "./types";
+import {todoReducer} from "../todo-reducer/todo-reducer";
+import {addTaskAction, changeTaskChecked, removeTaskAction, changeTitleTaskAction} from "../types";
 import {useState} from "react";
 import {TaskStateType} from "../components/App/App";
 import {taskReducer} from "./tasks-reducer";

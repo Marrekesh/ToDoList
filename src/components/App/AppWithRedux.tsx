@@ -2,18 +2,22 @@ import React, {useCallback, useEffect} from 'react';
 import './App.css';
 import {useState, useReducer} from "react";
 import TodoList from "../TodoList/TodoList";
-import {taskReducer} from "../../state/tasks-reducer";
-import {fetchTodoListThunk, todoReducer} from "../../state/todo-reducer";
+import {taskReducer} from "../../state/task-reducer/tasks-reducer";
+import {deleteTodoThunk, fetchTodoListThunk, todoReducer} from "../../state/todo-reducer/todo-reducer";
 import AddItemForm from "../addItemForm/AddItemForn";
+import {postTodoThunk} from "../../state/todo-reducer/todo-reducer";
 import {
-    addTodoAction,
     addTaskAction,
     removeTaskAction,
     changeTaskChecked,
+    changeTitleTaskAction,
+} from "../../state/task-reducer/task-type";
+import {
+    addTodoAction,
     changeFilterTodoAction,
     deleteTodoAction,
-    changeTitleTaskAction, setTodolistsAC
-} from "../../state/types";
+    setTodolistsAC
+} from "../../state/todo-reducer/todo-type";
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@mui/material";
 import {Menu} from "@mui/icons-material";
 import {useAppDispatch, useAppSelector} from "../../hooks/reduxHooks";
@@ -52,9 +56,6 @@ export let todolistID2: string = uuidv4()
 function AppWithRedux() {
 
     //DATA
-
-
-
     const dispatch = useAppDispatch()
     const todos = useAppSelector(state => state.todo)
 
@@ -68,10 +69,7 @@ function AppWithRedux() {
 
 
     const addTodoList = useCallback((title: string) => {
-
-        const action = addTodoAction(title)
-        dispatch(action)
-
+        dispatch(postTodoThunk(title))
     }, [dispatch])
 
     const changeFilter = useCallback((item: filterType, todolistId: string) => {
@@ -79,14 +77,13 @@ function AppWithRedux() {
         dispatch(action)
     }, [dispatch])
 
-    const deleteTodos = useCallback((id: string) => {
-        const action = deleteTodoAction(id)
-        dispatch(action)
-
+    const deleteTodos = useCallback((todolistId: string) => {
+        dispatch(deleteTodoThunk(todolistId))
     }, [dispatch])
 
     useEffect(() => {
         dispatch(fetchTodoListThunk)
+
 
     }, [])
     return (

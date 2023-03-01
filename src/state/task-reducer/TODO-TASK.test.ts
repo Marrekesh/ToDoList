@@ -1,6 +1,6 @@
-import {todoReducer} from "./todo-reducer";
-import {deleteTodoAction, addTodoAction, changeFilterTodoAction} from "./types";
-import {TodoType} from "./types";
+import {todoReducer} from "../todo-reducer/todo-reducer";
+import {deleteTodoAction, addTodoAction, changeFilterTodoAction} from "../types";
+import {TodoType} from "../types";
 import {TaskStateType} from "../components/App/App";
 import {taskReducer} from "./tasks-reducer";
 const { v4: uuidv4 } = require('uuid');

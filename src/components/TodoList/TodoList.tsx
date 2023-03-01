@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useCallback} from 'react';
+import React, {ChangeEvent, useCallback, useEffect} from 'react';
 import {ArrayBtnInfoType, ArrayTaskType} from "../App/AppWithRedux";
 import {useState} from "react";
 import {filterType} from "../App/AppWithRedux";
@@ -10,8 +10,11 @@ import EditSpan from "../editSpan/EditSpan";
 import { Delete } from '@mui/icons-material'
 import { IconButton } from '@mui/material'
 import c from "./todoList.module.css";
-import {addTaskAction, changeTaskChecked, changeTitleTaskAction, removeTaskAction} from "../../state/types";
+import {addTaskAction, changeTaskChecked, changeTitleTaskAction, removeTaskAction} from "../../state/task-reducer/task-type";
 import {useAppDispatch, useAppSelector} from "../../hooks/reduxHooks";
+import {postTaskThunk, fetchTasksThunk} from "../../state/task-reducer/tasks-reducer";
+
+
 const { v4: uuidv4 } = require('uuid');
 
 
@@ -41,8 +44,9 @@ const TodoList = React.memo((
 
 
     const addTaskHandler = useCallback((title: string) => {
-        const action = addTaskAction(title, todoId)
-        dispatch(action)
+        // const action = addTaskAction(title, todoId)
+        // dispatch(action)
+        dispatch(postTaskThunk(title, todoId))
     }, [dispatch, todoId])
 
     let allTodolistTasks = tasks
@@ -71,6 +75,10 @@ const TodoList = React.memo((
 
     //delete task
     const deleteTaskHandler = () => deleteTodos(todoId)
+
+    useEffect(()=> {
+        dispatch(fetchTasksThunk(todoId))
+    }, [])
 
     return (
         <div>

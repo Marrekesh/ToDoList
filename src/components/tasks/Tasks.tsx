@@ -1,5 +1,5 @@
 import React, {useCallback} from 'react';
-import {changeTaskChecked, changeTitleTaskAction, removeTaskAction} from "../../state/types";
+import {changeTaskChecked, changeTitleTaskAction, removeTaskAction} from "../../state/task-reducer/task-type";
 import {Checkbox, IconButton} from "@mui/material";
 import EditSpan from "../editSpan/EditSpan";
 import {Delete} from "@mui/icons-material";
@@ -13,7 +13,6 @@ type TaskPropType = {
 }
 
 const Tasks = React.memo(({id, todoId, isDone, title}: TaskPropType) => {
-    console.log('Task render')
     const dispatch = useAppDispatch()
 
     const checkedTaskHandler = () => {

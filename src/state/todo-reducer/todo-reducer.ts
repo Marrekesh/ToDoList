@@ -1,7 +1,7 @@
-import {setTodolistsAC, TodoType} from "./types";
-import {ActionType} from "./types";
-import {todolistID1, todolistID2} from "../components/App/AppWithRedux";
-import {todoListApi} from "../serverApi/todoListsApi";
+import {setTodolistsAC, TodoType, ActionType} from "./todo-type";
+import {todolistID1, todolistID2} from "../../components/App/AppWithRedux";
+import {todoListApi} from "../../serverApi/todoListsApi";
+import {addTodoAction, deleteTodoAction} from "./todo-type";
 import {Dispatch} from "redux";
 
 const { v4: uuidv4 } = require('uuid');
@@ -11,6 +11,21 @@ const { v4: uuidv4 } = require('uuid');
 //     {id: todolistID1, title: 'What to learn', filter: 'all'},
 //     {id: todolistID2, title: 'What to buy', filter: 'all'},
 // ]
+
+export const postTodoThunk = (title: string) => (dispatch: Dispatch) => {
+    todoListApi.postTodoLists(title)
+        .then(res => {
+            dispatch(addTodoAction(res.data.data.item.title, res.data.data.item.id))
+        })
+}
+export const deleteTodoThunk = (todolistId: string) => (dispatch: Dispatch) => {
+    todoListApi.deleteTodo(todolistId)
+        .then(res => {
+            if (res.status === 200)
+                dispatch(deleteTodoAction(todolistId))
+        })
+
+}
 
 export const fetchTodoListThunk = (dispatch: Dispatch) => {
     todoListApi.getTodoLists()

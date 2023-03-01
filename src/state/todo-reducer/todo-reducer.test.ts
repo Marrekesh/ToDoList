@@ -1,6 +1,5 @@
 import {todoReducer} from "./todo-reducer";
-import {deleteTodoAction, addTodoAction, changeFilterTodoAction} from "./types";
-import {TodoType} from "./types";
+import {deleteTodoAction, addTodoAction, changeFilterTodoAction, TodoType} from "./todo-type";
 const { v4: uuidv4 } = require('uuid');
 
 let todolistID1: string

@@ -1,5 +1,5 @@
-import {taskReducer} from "../tasks-reducer";
-import {todoReducer} from "../todo-reducer";
+import {taskReducer} from "../task-reducer/tasks-reducer";
+import {todoReducer} from "../todo-reducer/todo-reducer";
 import {applyMiddleware, combineReducers, createStore, AnyAction, legacy_createStore} from "redux";
 import {ThunkDispatch} from "redux-thunk";
 import thunk from "redux-thunk";
