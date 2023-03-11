@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useMemo, useState} from 'react';
+import React, {ChangeEvent, useState} from 'react';
 import {TextField, IconButton} from "@mui/material";
 
 import c from './addItemForm.module.css'

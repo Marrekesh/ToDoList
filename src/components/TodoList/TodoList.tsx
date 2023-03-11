@@ -1,16 +1,12 @@
-import React, {ChangeEvent, useCallback, useEffect} from 'react';
-import {ArrayBtnInfoType, ArrayTaskType} from "../App/AppWithRedux";
-import {useState} from "react";
+import React, { useCallback, useEffect} from 'react';
+import {ArrayBtnInfoType} from "../App/AppWithRedux";
 import {filterType} from "../App/AppWithRedux";
-import {Button, Checkbox} from "@mui/material";
-import Btn from "../button/Button";
+import {Button} from "@mui/material";
 import Tasks from "../tasks/Tasks";
 import AddItemForm from "../addItemForm/AddItemForn";
-import EditSpan from "../editSpan/EditSpan";
 import { Delete } from '@mui/icons-material'
 import { IconButton } from '@mui/material'
 import c from "./todoList.module.css";
-import {addTaskAction, changeTaskChecked, changeTitleTaskAction, removeTaskAction} from "../../state/task-reducer/task-type";
 import {useAppDispatch, useAppSelector} from "../../hooks/reduxHooks";
 import {postTaskThunk, fetchTasksThunk} from "../../state/task-reducer/tasks-reducer";
 
@@ -44,8 +40,6 @@ const TodoList = React.memo((
 
 
     const addTaskHandler = useCallback((title: string) => {
-        // const action = addTaskAction(title, todoId)
-        // dispatch(action)
         dispatch(postTaskThunk(title, todoId))
     }, [dispatch, todoId])
 

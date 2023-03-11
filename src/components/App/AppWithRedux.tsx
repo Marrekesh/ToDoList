@@ -1,27 +1,16 @@
 import React, {useCallback, useEffect} from 'react';
 import './App.css';
-import {useState, useReducer} from "react";
+import {useState} from "react";
 import TodoList from "../TodoList/TodoList";
-import {taskReducer} from "../../state/task-reducer/tasks-reducer";
+
 import {deleteTodoThunk, fetchTodoListThunk, todoReducer} from "../../state/todo-reducer/todo-reducer";
 import AddItemForm from "../addItemForm/AddItemForn";
 import {postTodoThunk} from "../../state/todo-reducer/todo-reducer";
-import {
-    addTaskAction,
-    removeTaskAction,
-    changeTaskChecked,
-    changeTitleTaskAction,
-} from "../../state/task-reducer/task-type";
-import {
-    addTodoAction,
-    changeFilterTodoAction,
-    deleteTodoAction,
-    setTodolistsAC
-} from "../../state/todo-reducer/todo-type";
+
+import {changeFilterTodoAction} from "../../state/todo-reducer/todo-type";
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@mui/material";
 import {Menu} from "@mui/icons-material";
 import {useAppDispatch, useAppSelector} from "../../hooks/reduxHooks";
-import {todoListApi} from "../../serverApi/todoListsApi";
 
 const { v4: uuidv4 } = require('uuid');
 
@@ -114,7 +103,7 @@ function AppWithRedux() {
                         todos.map(todo => {
 
                             return (
-                                <Grid item>
+                                <Grid item key={todo.id}>
                                     <Paper style={{padding: '10px'}}>
                                         <TodoList
                                             key={todo.id}

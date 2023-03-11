@@ -6,7 +6,6 @@ type EditSpanType = {
 }
 
 const EditSpan = React.memo(({title, callback}: EditSpanType) => {
-    console.log('edit span')
     const [textTitle, setTextTitle] = useState<string>('')
     const [editMode, setEditMode] = useState<boolean>(false)
 

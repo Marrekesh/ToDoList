@@ -3,6 +3,7 @@ import {changeTaskChecked, changeTitleTaskAction, removeTaskAction} from "../../
 import {Checkbox, IconButton} from "@mui/material";
 import EditSpan from "../editSpan/EditSpan";
 import {Delete} from "@mui/icons-material";
+import {deleteTaskThunk, changeTaskTitle} from "../../state/task-reducer/tasks-reducer";
 import {useAppDispatch} from "../../hooks/reduxHooks";
 
 type TaskPropType = {
@@ -20,13 +21,13 @@ const Tasks = React.memo(({id, todoId, isDone, title}: TaskPropType) => {
         dispatch(action)
     }
     const removeTaskHandler = () => {
-        const action = removeTaskAction(id, todoId)
-        dispatch(action)
+        dispatch(deleteTaskThunk(id, todoId))
     }
 
     const changStatusEditSpan = useCallback((title: string) => {
-        const action = changeTitleTaskAction(title, id, todoId)
-        dispatch(action)
+        // const action = changeTitleTaskAction(title, id, todoId)
+        // dispatch(action)
+        dispatch(changeTaskTitle(title, id, todoId))
     },[dispatch, id])
 
     return <div key={id}>

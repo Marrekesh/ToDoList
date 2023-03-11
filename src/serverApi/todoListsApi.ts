@@ -27,6 +27,11 @@ export const todoListApi = {
             {title},
             settings
             )
+    },
+    deleteTask(taskId: string, todoListId: string, ) {
+        return axios.delete(`https://social-network.samuraijs.com/api/1.1/todo-lists/${todoListId}/tasks/${taskId}`, settings)
+    },
+    changeTaskTitle(title: string, taskId: string, todoListId: string) {
+        return axios.put(`https://social-network.samuraijs.com/api/1.1/todo-lists/${todoListId}/tasks/${taskId}`, {title}, settings)
     }
-
 }
