@@ -1,38 +1,36 @@
 import {setTodolistsAC, TodoType, ActionType} from "./todo-type";
-import {todolistID1, todolistID2} from "../../components/App/AppWithRedux";
 import {todoListApi} from "../../serverApi/todoListsApi";
 import {addTodoAction, deleteTodoAction} from "./todo-type";
 import {Dispatch} from "redux";
 
-const { v4: uuidv4 } = require('uuid');
-
+import { postTodoThunk, fetchTodoListThunk, deleteTodoThunk } from "./thunks-todo-reducer";
 
 // const initialState: Array<TodoType> = [
 //     {id: todolistID1, title: 'What to learn', filter: 'all'},
 //     {id: todolistID2, title: 'What to buy', filter: 'all'},
 // ]
 
-export const postTodoThunk = (title: string) => (dispatch: Dispatch) => {
-    todoListApi.postTodoLists(title)
-        .then(res => {
-            dispatch(addTodoAction(res.data.data.item.title, res.data.data.item.id))
-        })
-}
-export const deleteTodoThunk = (todolistId: string) => (dispatch: Dispatch) => {
-    todoListApi.deleteTodo(todolistId)
-        .then(res => {
-            if (res.status === 200)
-                dispatch(deleteTodoAction(todolistId))
-        })
+// export const postTodoThunk = (title: string) => (dispatch: Dispatch) => {
+//     todoListApi.postTodoLists(title)
+//         .then(res => {
+//             dispatch(addTodoAction(res.data.data.item.title, res.data.data.item.id))
+//         })
+// }
+// export const deleteTodoThunk = (todolistId: string) => (dispatch: Dispatch) => {
+//     todoListApi.deleteTodo(todolistId)
+//         .then(res => {
+//             if (res.status === 200)
+//                 dispatch(deleteTodoAction(todolistId))
+//         })
 
-}
+// }
 
-export const fetchTodoListThunk = (dispatch: Dispatch) => {
-    todoListApi.getTodoLists()
-        .then(res => {
-            dispatch(setTodolistsAC(res.data))
-        })
-}
+// export const fetchTodoListThunk = (dispatch: Dispatch) => {
+//     todoListApi.getTodoLists()
+//         .then(res => {
+//             dispatch(setTodolistsAC(res.data))
+//         })
+// }
 
 const initialState: Array<TodoType> = []
 
@@ -52,14 +50,9 @@ export const todoReducer = (state: Array<TodoType> = initialState, action: Actio
             // if (todolist) {
             //     todolist.filter = action.filter
             // }
-            //
+            
             // return [...state]
-            return state.map(item => {
-                if (item.id === action.id) {
-                    return {...item, filter: action.filter}
-                }
-                return item
-            })
+            return state.map(item => item.id === action.id ? {...item, filter: action.filter} : item)
         }
         case 'SET-TODOLISTS': {
             return action.todoLists.map(tl => ({

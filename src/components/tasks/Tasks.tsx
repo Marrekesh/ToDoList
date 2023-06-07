@@ -1,9 +1,10 @@
 import React, {useCallback} from 'react';
-import {changeTaskChecked, changeTitleTaskAction, removeTaskAction} from "../../state/task-reducer/task-type";
+import {changeTaskChecked} from "../../state/task-reducer/task-type";
 import {Checkbox, IconButton} from "@mui/material";
 import EditSpan from "../editSpan/EditSpan";
 import {Delete} from "@mui/icons-material";
-import {deleteTaskThunk, changeTaskTitle} from "../../state/task-reducer/tasks-reducer";
+
+import { deleteTaskThunk, changeTaskTitle } from '../../state/task-reducer/thunks-task-reducer';
 import {useAppDispatch} from "../../hooks/reduxHooks";
 
 type TaskPropType = {

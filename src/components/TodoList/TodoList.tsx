@@ -8,10 +8,7 @@ import { Delete } from '@mui/icons-material'
 import { IconButton } from '@mui/material'
 import c from "./todoList.module.css";
 import {useAppDispatch, useAppSelector} from "../../hooks/reduxHooks";
-import {postTaskThunk, fetchTasksThunk} from "../../state/task-reducer/tasks-reducer";
-
-
-const { v4: uuidv4 } = require('uuid');
+import {postTaskThunk, fetchTasksThunk} from "../../state/task-reducer/thunks-task-reducer";
 
 
 type ToDoPropsType = {

@@ -12,8 +12,8 @@
 // export type TaskStateType = {
 //     [key: string]: ArrayTaskType
 // }
-import {fetchTodoListThunk} from "./todo-reducer/todo-reducer";
-
+// import {fetchTodoListThunk} from "./todo-reducer/todo-reducer";
+import { fetchTodoListThunk } from "./todo-reducer/thunks-todo-reducer";
 // const { v4: uuidv4 } = require('uuid');
 // export type TodoType = {
 //     id: string

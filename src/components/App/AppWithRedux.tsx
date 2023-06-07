@@ -3,9 +3,9 @@ import './App.css';
 import {useState} from "react";
 import TodoList from "../TodoList/TodoList";
 
-import {deleteTodoThunk, fetchTodoListThunk, todoReducer} from "../../state/todo-reducer/todo-reducer";
+import { deleteTodoThunk, postTodoThunk, fetchTodoListThunk } from '../../state/todo-reducer/thunks-todo-reducer';
 import AddItemForm from "../addItemForm/AddItemForn";
-import {postTodoThunk} from "../../state/todo-reducer/todo-reducer";
+// import {postTodoThunk} from "../../state/todo-reducer/todo-reducer";
 
 import {changeFilterTodoAction} from "../../state/todo-reducer/todo-type";
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@mui/material";
@@ -31,9 +31,9 @@ type todos = {
     filter: filterType
 }
 
-export type TaskStateType = {
-    [key: string]: ArrayTaskType
-}
+// export type TaskStateType = {
+//     [key: string]: ArrayTaskType
+// }
 
 export type ArrayTaskType = Array<SingleTaskType>
 export type ArrayBtnInfoType = Array<BtnInfoType>
