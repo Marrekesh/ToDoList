@@ -1,4 +1,5 @@
 import {AddTodoActionType, RemoveTodoActionType, SetTodolistsActionType} from "../todo-reducer/todo-type";
+import {SetStatusType} from "../app-reducer/app-reducer";
 
 type SingleTaskType = {
     id: string,
@@ -52,6 +53,7 @@ export type ActionTaskType = AddTaskType
     | ChangeTitleTaskType
     | SetTodolistsActionType
     | SetTasksActionType
+    | SetStatusType
 
 // actions task creator
 

@@ -1,3 +1,5 @@
+import {SetStatusType} from "../app-reducer/app-reducer";
+
 const { v4: uuidv4 } = require('uuid');
 export type TodoType = {
     id: string
@@ -39,7 +41,12 @@ export type SetTodolistsActionType = {
 //ACTION TYPES
 
 
-export type ActionType = RemoveTodoActionType | AddTodoActionType | ChangeFilterActionType | SetTodolistsActionType
+export type ActionTodoType =
+     RemoveTodoActionType    |
+     AddTodoActionType       |
+     ChangeFilterActionType  |
+     SetTodolistsActionType  |
+     SetStatusType
 
 //ACTIONS CREATORS
 export const setTodolistsAC = (todoLists: Array<TodoType>): SetTodolistsActionType => {

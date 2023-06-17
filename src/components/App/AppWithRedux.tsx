@@ -8,9 +8,10 @@ import AddItemForm from "../addItemForm/AddItemForn";
 // import {postTodoThunk} from "../../state/todo-reducer/todo-reducer";
 
 import {changeFilterTodoAction} from "../../state/todo-reducer/todo-type";
-import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@mui/material";
+import {AppBar, Button, Container, Grid, IconButton, LinearProgress, Paper, Toolbar, Typography} from "@mui/material";
 import {Menu} from "@mui/icons-material";
 import {useAppDispatch, useAppSelector} from "../../hooks/reduxHooks";
+import {CustomizedSnackbars} from "../ErrorSnackbar/ErrorSnackbar";
 
 const { v4: uuidv4 } = require('uuid');
 
@@ -42,11 +43,16 @@ export type filterType = 'all' | 'active' | 'completed'
 export let todolistID1: string = uuidv4()
 export let todolistID2: string = uuidv4()
 
+function CostomizeSna() {
+    return null;
+}
+
 function AppWithRedux() {
 
     //DATA
     const dispatch = useAppDispatch()
     const todos = useAppSelector(state => state.todo)
+    const status = useAppSelector(state => state.app.status)
 
     const [btnInfo, setBtnInfo] = useState<ArrayBtnInfoType>([
         {id: uuidv4(), title: 'all'},
@@ -72,9 +78,9 @@ function AppWithRedux() {
 
     useEffect(() => {
         dispatch(fetchTodoListThunk)
-
-
     }, [])
+
+
     return (
         <div className="App">
             <AppBar position="static">
@@ -92,6 +98,7 @@ function AppWithRedux() {
                     </Typography>
                     <Button color="inherit">Login</Button>
                 </Toolbar>
+                {status === 'loading' && <LinearProgress />}
             </AppBar>
             <Container fixed>
                 <Grid container style={{padding: '20px'}}>
@@ -121,7 +128,7 @@ function AppWithRedux() {
                     }
                 </Grid>
             </Container>
-
+            <CustomizedSnackbars/>
         </div>
     );
 }

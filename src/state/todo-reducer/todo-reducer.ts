@@ -1,4 +1,4 @@
-import {setTodolistsAC, TodoType, ActionType} from "./todo-type";
+import   {setTodolistsAC, TodoType, ActionTodoType} from "./todo-type";
 import {todoListApi} from "../../serverApi/todoListsApi";
 import {addTodoAction, deleteTodoAction} from "./todo-type";
 import {Dispatch} from "redux";
@@ -34,7 +34,7 @@ import { postTodoThunk, fetchTodoListThunk, deleteTodoThunk } from "./thunks-tod
 
 const initialState: Array<TodoType> = []
 
-export const todoReducer = (state: Array<TodoType> = initialState, action: ActionType): Array<TodoType> => {
+export const todoReducer = (state: Array<TodoType> = initialState, action: ActionTodoType): Array<TodoType> => {
     switch (action.type) {
         case 'DELETE-TODO':
             return state.filter(item => item.id !== action.id)
