@@ -1,9 +1,16 @@
 import axios from "axios";
+import {LoginType} from "../pages/login/Login";
 
 const settings = {
     withCredentials: true,
     headers: {
         'API-KEY': '44b4ed13-0e89-4877-b270-a313fdbdbaba'
+    }
+}
+
+export const authApi = {
+    login(data: LoginType) {
+        return axios.post(`https://social-network.samuraijs.com/api/1.1/auth/login`,data, settings)
     }
 }
 

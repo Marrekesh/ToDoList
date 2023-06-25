@@ -1,10 +1,12 @@
 import {AddTodoActionType, RemoveTodoActionType, SetTodolistsActionType} from "../todo-reducer/todo-type";
 import {SetStatusType} from "../app-reducer/app-reducer";
+import {RequestStatusType} from "../app-reducer/app-reducer";
 
 type SingleTaskType = {
     id: string,
     title: string,
-    isDone: boolean
+    isDone: boolean,
+    // entityStatus: RequestStatusType
 }
 export type ArrayTaskType = Array<SingleTaskType>
 

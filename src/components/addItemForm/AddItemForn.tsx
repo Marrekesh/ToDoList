@@ -4,10 +4,11 @@ import {TextField, IconButton} from "@mui/material";
 import c from './addItemForm.module.css'
 
 type AddItemFormType = {
-    addItem: (title: string) => void
+    addItem: (title: string) => void,
+    disabled?: boolean
 }
 
-const AddItemForm = React.memo(({addItem}: AddItemFormType) => {
+const AddItemForm = React.memo(({addItem, disabled}: AddItemFormType) => {
     const [title, setTitle] = useState('')
     const [error, setError] = useState<string | null>(null)
 
@@ -41,8 +42,9 @@ const AddItemForm = React.memo(({addItem}: AddItemFormType) => {
                     onChange={taskTextHandler}
                     error={!!error}
                     helperText={error}
+                    disabled={disabled}
                 />
-                <IconButton color='primary' onClick={addTaskHandler}>+</IconButton>
+                <IconButton disabled={disabled} color='primary' onClick={addTaskHandler}>+</IconButton>
             </div>
             {/*{errorBlock}*/}
         </div>

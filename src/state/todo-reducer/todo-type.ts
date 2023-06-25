@@ -1,10 +1,12 @@
-import {SetStatusType} from "../app-reducer/app-reducer";
+import {SetStatusType, SetErrorType} from "../app-reducer/app-reducer";
+import {RequestStatusType} from "../app-reducer/app-reducer";
 
 const { v4: uuidv4 } = require('uuid');
 export type TodoType = {
     id: string
     title: string
     filter: filterType
+    entityStatus: RequestStatusType
 }
 
 
@@ -38,6 +40,13 @@ export type SetTodolistsActionType = {
     todoLists: Array<TodoType>
 }
 
+export type ChangeEntityStatusActionType = {
+    type: 'CHANGE-ENTITY-TODO'
+    id: string,
+    entityStatus: RequestStatusType
+}
+
+
 //ACTION TYPES
 
 
@@ -46,7 +55,10 @@ export type ActionTodoType =
      AddTodoActionType       |
      ChangeFilterActionType  |
      SetTodolistsActionType  |
-     SetStatusType
+     SetStatusType           |
+     ChangeEntityStatusActionType |
+    SetErrorType
+
 
 //ACTIONS CREATORS
 export const setTodolistsAC = (todoLists: Array<TodoType>): SetTodolistsActionType => {
@@ -63,3 +75,8 @@ export const addTodoAction = (title: string, todoId: string): AddTodoActionType 
 export const changeFilterTodoAction = (id: string, filter: filterType): ChangeFilterActionType => {
     return {type: 'CHANGE-FILTER-TODO', id, filter}
 }
+
+export const changeEntityStatusAction = (id: string, entityStatus: RequestStatusType): ChangeEntityStatusActionType => {
+    return {type: "CHANGE-ENTITY-TODO", id, entityStatus}
+}
+

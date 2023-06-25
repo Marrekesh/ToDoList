@@ -19,13 +19,9 @@ export const postTaskThunk = (title: string, todoId: string) => (dispatch: Dispa
         .then(res => {
             if (res.data.resultCode === 0) {
                 dispatch(addTaskAction(res.data.data.item.title, todoId ,res.data.data.item.id))
-            } else {
-                if (res.data.resultCode.length()) {
-                    dispatch(setErrorAC(res.data.messages[0]))
-                }
-
+            } else if (res.data.messages.length) {
+                dispatch(setErrorAC(res.data.messages[0]))
             }
-
         })
         .finally(() => dispatch(setStatusAC('successed')))
 
@@ -36,7 +32,6 @@ export const deleteTaskThunk = (taskId: string, todoListId: string) => (dispatch
     todoListApi.deleteTask(taskId, todoListId)
         .then(res => {
             if (res.status === 200) {
-                console.log(res)
                 dispatch(removeTaskAction(taskId, todoListId))
                 dispatch(setStatusAC('successed'))
             }

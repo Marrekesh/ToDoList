@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect} from 'react';
-import {ArrayBtnInfoType} from "../App/AppWithRedux";
-import {filterType} from "../App/AppWithRedux";
+import {ArrayBtnInfoType, filterType} from "../../pages/todoLists/TodoLists";
 import {Button} from "@mui/material";
 import Tasks from "../tasks/Tasks";
 import AddItemForm from "../addItemForm/AddItemForn";
@@ -9,7 +8,7 @@ import { IconButton } from '@mui/material'
 import c from "./todoList.module.css";
 import {useAppDispatch, useAppSelector} from "../../hooks/reduxHooks";
 import {postTaskThunk, fetchTasksThunk} from "../../state/task-reducer/thunks-task-reducer";
-
+import {RequestStatusType} from "../../state/app-reducer/app-reducer";
 
 type ToDoPropsType = {
     todoId: string
@@ -18,6 +17,7 @@ type ToDoPropsType = {
     changeFilter: (item: filterType, todolistId: string) => void
     btnInfo: ArrayBtnInfoType
     deleteTodos: (id: string) => void
+    entityStatus: RequestStatusType
 
 }
 
@@ -29,6 +29,7 @@ const TodoList = React.memo((
         btnInfo,
         changeFilter,
         deleteTodos,
+        entityStatus
 
     }: ToDoPropsType
 ) => {
@@ -65,7 +66,7 @@ const TodoList = React.memo((
     })
 
     //delete task
-    const deleteTaskHandler = () => deleteTodos(todoId)
+    const deleteTodoHandler = () => deleteTodos(todoId)
 
     useEffect(()=> {
         dispatch(fetchTasksThunk(todoId))
@@ -74,17 +75,22 @@ const TodoList = React.memo((
     return (
         <div>
             <h3>{title}
-                <IconButton onClick={deleteTaskHandler}>
+                <IconButton disabled={entityStatus === "loading"} onClick={deleteTodoHandler}>
                     <Delete/>
                 </IconButton>
             </h3>
 
-            <AddItemForm addItem={addTaskHandler}/>
+            <AddItemForm disabled={entityStatus === "loading"} addItem={addTaskHandler}/>
             <div>
                 {   tasksForToDoList.length ?
 
                     tasksForToDoList.map((task) => {
-                       return <Tasks key={task.id} id={task.id} todoId={todoId} isDone={task.isDone} title={task.title}/>
+                       return <Tasks
+                           key={task.id}
+                           id={task.id}
+                           todoId={todoId}
+                           isDone={task.isDone}
+                           title={task.title}/>
                     })
                     : <div>Нет тасок</div>
 
