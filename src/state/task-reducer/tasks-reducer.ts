@@ -59,6 +59,8 @@ export const taskReducer = (state:TaskStateType = initialState, action: ActionTa
             stateCopy[action.todolistId] = action.tasks
             return stateCopy
         }
+        case "CLEAR-DATA":
+            return {}
         default:
             return state
     }

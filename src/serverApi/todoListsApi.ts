@@ -9,8 +9,14 @@ const settings = {
 }
 
 export const authApi = {
+    me() {
+        return axios.get(`https://social-network.samuraijs.com/api/1.1/auth/me`, settings)
+    },
     login(data: LoginType) {
         return axios.post(`https://social-network.samuraijs.com/api/1.1/auth/login`,data, settings)
+    },
+    logOut() {
+        return axios.delete(`https://social-network.samuraijs.com/api/1.1/auth/login`, settings)
     }
 }
 
@@ -20,7 +26,6 @@ export const todoListApi = {
     },
     postTodoLists(title: string) {
         return axios.post(`https://social-network.samuraijs.com/api/1.1/todo-lists`,{title, filter: 'all'}, settings)
-
     },
     deleteTodo(todolistId: string) {
         return axios.delete(`https://social-network.samuraijs.com/api/1.1/todo-lists/${todolistId}`, settings)

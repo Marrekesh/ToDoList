@@ -5,6 +5,7 @@ import React, {useCallback, useEffect, useState} from "react";
 import {useAppDispatch, useAppSelector} from "../../hooks/reduxHooks";
 import {deleteTodoThunk, fetchTodoListThunk, postTodoThunk} from "../../state/todo-reducer/thunks-todo-reducer";
 import {changeFilterTodoAction} from "../../state/todo-reducer/todo-type";
+import {Navigate} from "react-router-dom";
 
 const { v4: uuidv4 } = require('uuid');
 
@@ -33,7 +34,7 @@ export const TodoLists = () => {
 
     const dispatch = useAppDispatch()
     const todos = useAppSelector(state => state.todo)
-
+    const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
 
     const [btnInfo, setBtnInfo] = useState<ArrayBtnInfoType>([
         {id: uuidv4(), title: 'all'},
@@ -43,6 +44,8 @@ export const TodoLists = () => {
 
     //CRUD FUNCTION
     useEffect(() => {
+        console.log('todolists')
+        if (!isLoggedIn) return
         dispatch(fetchTodoListThunk)
     }, [])
 
@@ -59,7 +62,9 @@ export const TodoLists = () => {
         dispatch(deleteTodoThunk(todolistId))
     }, [dispatch])
 
-
+    if (!isLoggedIn) {
+        return <Navigate to='/login'/>
+    }
     return <>
 
         <Grid container style={{padding: '20px'}}>

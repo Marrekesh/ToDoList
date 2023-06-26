@@ -28,6 +28,8 @@ export const todoReducer = (state: Array<TodoType> = initialState, action: Actio
         case 'CHANGE-ENTITY-TODO': {
             return state.map(todo => todo.id === action.id ? {...todo, entityStatus: action.entityStatus}: todo)
         }
+        case "CLEAR-DATA":
+            return []
         default:
             return state
     }

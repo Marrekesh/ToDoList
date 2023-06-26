@@ -46,6 +46,9 @@ export type ChangeEntityStatusActionType = {
     entityStatus: RequestStatusType
 }
 
+export type ClearDataType = {
+    type: 'CLEAR-DATA'
+}
 
 //ACTION TYPES
 
@@ -57,7 +60,8 @@ export type ActionTodoType =
      SetTodolistsActionType  |
      SetStatusType           |
      ChangeEntityStatusActionType |
-    SetErrorType
+     SetErrorType |
+     ClearDataType
 
 
 //ACTIONS CREATORS
@@ -78,5 +82,9 @@ export const changeFilterTodoAction = (id: string, filter: filterType): ChangeFi
 
 export const changeEntityStatusAction = (id: string, entityStatus: RequestStatusType): ChangeEntityStatusActionType => {
     return {type: "CHANGE-ENTITY-TODO", id, entityStatus}
+}
+
+export const clearDataAction = (): ClearDataType => {
+    return {type: 'CLEAR-DATA'}
 }
 
