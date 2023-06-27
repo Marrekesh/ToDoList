@@ -1,11 +1,18 @@
 import {SetStatusType, SetErrorType} from "../app-reducer/app-reducer";
 import {RequestStatusType} from "../app-reducer/app-reducer";
+import {TodoListType} from "../../serverApi/todoListsApi";
 
 const { v4: uuidv4 } = require('uuid');
-export type TodoType = {
-    id: string
-    title: string
-    filter: filterType
+
+// export type TodoType = {
+//     id: string
+//     title: string
+//     filter: filterType
+//     entityStatus: RequestStatusType
+// }
+
+export type TodoListDomainType = TodoListType & {
+    filter: filterType,
     entityStatus: RequestStatusType
 }
 
@@ -24,8 +31,7 @@ export type RemoveTodoActionType = {
 
 export type AddTodoActionType = {
     type: 'ADD-TODO'
-    todoId: string
-    title: string
+    todoList: TodoListType
 }
 
 export type ChangeFilterActionType = {
@@ -37,7 +43,7 @@ export type ChangeFilterActionType = {
 
 export type SetTodolistsActionType = {
     type: 'SET-TODOLISTS'
-    todoLists: Array<TodoType>
+    todoLists: Array<TodoListType>
 }
 
 export type ChangeEntityStatusActionType = {
@@ -65,15 +71,15 @@ export type ActionTodoType =
 
 
 //ACTIONS CREATORS
-export const setTodolistsAC = (todoLists: Array<TodoType>): SetTodolistsActionType => {
+export const setTodolistsAC = (todoLists: Array<TodoListType>): SetTodolistsActionType => {
     return {type: 'SET-TODOLISTS', todoLists}
 }
 export const deleteTodoAction = (id: string): RemoveTodoActionType => {
     return {type: 'DELETE-TODO', id}
 }
 
-export const addTodoAction = (title: string, todoId: string): AddTodoActionType => {
-    return {type: 'ADD-TODO', title, todoId}
+export const addTodoAction = (todoList: TodoListType): AddTodoActionType => {
+    return {type: 'ADD-TODO', todoList}
 }
 
 export const changeFilterTodoAction = (id: string, filter: filterType): ChangeFilterActionType => {

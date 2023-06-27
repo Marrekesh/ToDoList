@@ -3,7 +3,7 @@ import AddItemForm from "../../components/addItemForm/AddItemForn";
 import TodoList from "../../components/TodoList/TodoList";
 import React, {useCallback, useEffect, useState} from "react";
 import {useAppDispatch, useAppSelector} from "../../hooks/reduxHooks";
-import {deleteTodoThunk, fetchTodoListThunk, postTodoThunk} from "../../state/todo-reducer/thunks-todo-reducer";
+import {deleteTodoThunk, fetchTodoListThunk, postTodoThunk} from "../../state/todo-reducer/thunks-todo";
 import {changeFilterTodoAction} from "../../state/todo-reducer/todo-type";
 import {Navigate} from "react-router-dom";
 

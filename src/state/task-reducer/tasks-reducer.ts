@@ -40,7 +40,7 @@ export const taskReducer = (state:TaskStateType = initialState, action: ActionTa
         }
         case "ADD-TODO": {
 
-            return {...state, [action.todoId]: []}
+            return {...state, [action.todoList.id]: []}
         }
         case "DELETE-TODO": {
             const newState = {...state}

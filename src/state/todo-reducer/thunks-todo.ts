@@ -10,7 +10,8 @@ export const postTodoThunk = (title: string) => (dispatch: Dispatch<ActionTodoTy
     todoListApi.postTodoLists(title)
         .then(res => {
             if (res.data.resultCode === 0) {
-                dispatch(addTodoAction(res.data.data.item.title, res.data.data.item.id))
+                console.log(res)
+                dispatch(addTodoAction(res.data.data.item))
             } else if (res.data.messages.length) {
                 dispatch(setErrorAC(res.data.messages[0]))
             }
@@ -37,10 +38,11 @@ export const deleteTodoThunk = (todolistId: string) => (dispatch: Dispatch<Actio
 
 }
 
-export const fetchTodoListThunk = (dispatch: Dispatch<ActionTodoType>) => {
+export const fetchTodoListThunk = (dispatch: Dispatch) => {
     dispatch(setStatusAC('loading'))
     todoListApi.getTodoLists()
         .then(res => {
+            console.log(res)
             dispatch(setTodolistsAC(res.data))
             dispatch(setStatusAC('successed'))
         })
