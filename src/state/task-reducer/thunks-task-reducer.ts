@@ -1,12 +1,22 @@
 import { Dispatch } from "redux"
-import { todoListApi } from "../../serverApi/todoListsApi"
-import { setTaskAC, removeTaskAction, addTaskAction, changeTitleTaskAction} from "../task-reducer/task-type";
+import {TaskPriorities, TaskStatus, todoListApi, UpdateTaskModel} from "../../serverApi/todoListsApi"
+import {
+    setTaskAC,
+    removeTaskAction,
+    addTaskAction,
+    changeTitleTaskAction,
+    UpdateDomainTaskModelType,
+    updateTaskAC
+} from "../task-reducer/task-type";
 import {setErrorAC, setStatusAC} from "../app-reducer/app-reducer";
+import {AppRootStateType} from "../store/store";
+import {handleServerAppError, hendleServerNetworkError} from "../../utils/error-utils";
 
 export const fetchTasksThunk = (todolistId: string) => (dispatch: Dispatch) => {
     dispatch(setStatusAC('loading'))
     todoListApi.getTasks(todolistId)
         .then((res) => {
+            console.log(res)
             const tasks = res.data.items
             dispatch(setTaskAC(tasks, todolistId))
             dispatch(setStatusAC('successed'))
@@ -17,8 +27,9 @@ export const postTaskThunk = (title: string, todoId: string) => (dispatch: Dispa
     dispatch(setStatusAC('loading'))
     todoListApi.postTask(title, todoId)
         .then(res => {
+            console.log(res)
             if (res.data.resultCode === 0) {
-                dispatch(addTaskAction(res.data.data.item.title, todoId ,res.data.data.item.id))
+                dispatch(addTaskAction(res.data.data.item))
             } else if (res.data.messages.length) {
                 dispatch(setErrorAC(res.data.messages[0]))
             }
@@ -46,4 +57,42 @@ export const changeTaskTitle = (title: string, taskId: string, todoListId: strin
             dispatch(setStatusAC('successed'))
         })
 }
+
+
+export const updateTaskTC = (taskId: string, domainModel: UpdateDomainTaskModelType, todolistId: string) =>
+    (dispatch: Dispatch, getState: () => AppRootStateType) => {
+        const state = getState()
+
+        const task = state.task[todolistId].find(t => t.id === taskId)
+        if (!task) {
+            //throw new Error("task not found in the state");
+            console.warn('task not found in the state')
+            return
+        }
+
+        const apiModel: UpdateTaskModel = {
+            deadline: task.deadline,
+            description:task.description,
+            completed: task.completed,
+            priority: task.priority,
+            startDate: task.startDate,
+            title: task.title,
+            status: task.status,
+            ...domainModel
+        }
+
+        todoListApi.updateTask(todolistId, taskId, apiModel)
+            .then(res => {
+                console.log(res)
+                if (res.data.resultCode === 0) {
+                    const action = updateTaskAC(todolistId, taskId,  domainModel)
+                    dispatch(action)
+                } else {
+                    handleServerAppError(res.data, dispatch);
+                }
+            })
+            .catch((error) => {
+                hendleServerNetworkError(error, dispatch);
+            })
+    }
 

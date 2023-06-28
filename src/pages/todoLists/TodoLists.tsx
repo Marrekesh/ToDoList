@@ -6,6 +6,8 @@ import {useAppDispatch, useAppSelector} from "../../hooks/reduxHooks";
 import {deleteTodoThunk, fetchTodoListThunk, postTodoThunk} from "../../state/todo-reducer/thunks-todo";
 import {changeFilterTodoAction} from "../../state/todo-reducer/todo-type";
 import {Navigate} from "react-router-dom";
+import {TaskStatus} from "../../serverApi/todoListsApi";
+import {updateTaskTC} from "../../state/task-reducer/thunks-task-reducer";
 
 const { v4: uuidv4 } = require('uuid');
 
@@ -62,6 +64,11 @@ export const TodoLists = () => {
         dispatch(deleteTodoThunk(todolistId))
     }, [dispatch])
 
+    const changeStatus = useCallback(function (id: string, status: TaskStatus, todolistId: string) {
+        const thunk = updateTaskTC(id, {status}, todolistId)
+        dispatch(thunk)
+    }, [])
+
     if (!isLoggedIn) {
         return <Navigate to='/login'/>
     }
@@ -79,6 +86,7 @@ export const TodoLists = () => {
                             <Grid item key={todo.id}>
                                 <Paper style={{padding: '10px'}}>
                                     <TodoList
+                                        changeStatus={changeStatus}
                                         entityStatus={todo.entityStatus}
                                         key={todo.id}
                                         todoId={todo.id}

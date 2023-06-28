@@ -8,26 +8,24 @@ export const taskReducer = (state:TaskStateType = initialState, action: ActionTa
     switch (action.type) {
         case 'ADD-TASK': {
 
-            const newTask = {
-                id: action.taskId,
-                title: action.title,
-                isDone: false,
-            }
-            return {...state, [action.todoId]: [newTask, ...state[action.todoId]]}
+            // const newTask = {
+            //     id: action.taskId,
+            //     title: action.title
+            // }
+            // return {...state, [action.todoId]: [newTask, ...state[action.todoId]]}
+            return {...state, [action.task.todoListId]: [action.task, ...state[action.task.todoListId]]}
         }
         case "REMOVE-TASK": {
 
             return {...state, [action.todoId]: state[action.todoId].filter(item => item.id !== action.id)}
         }
-        case "CHANGE-TASK-CHECKED": {
+        case "UPDATE-TASKS":
+            return {
+                ...state,
+                [action.todoId]: state[action.todoId]
+                .map(item => item.id === action.taskId ? {...item, ...action.domainModel} : item)
+            }
 
-            return {...state, [action.todoId]: state[action.todoId].map(item => {
-                    if (item.id === action.id) {
-                        return {...item, isDone: !item.isDone}
-                    }
-                    return item
-                })}
-        }
         case "CHANGE-TASK-TITLE": {
 
             return {...state, [action.todoId]: state[action.todoId].map(item => {

@@ -9,6 +9,7 @@ import c from "./todoList.module.css";
 import {useAppDispatch, useAppSelector} from "../../hooks/reduxHooks";
 import {postTaskThunk, fetchTasksThunk} from "../../state/task-reducer/thunks-task-reducer";
 import {RequestStatusType} from "../../state/app-reducer/app-reducer";
+import {TaskStatus} from "../../serverApi/todoListsApi";
 
 type ToDoPropsType = {
     todoId: string
@@ -18,6 +19,7 @@ type ToDoPropsType = {
     btnInfo: ArrayBtnInfoType
     deleteTodos: (id: string) => void
     entityStatus: RequestStatusType
+    changeStatus: (id: string, status: TaskStatus, todolistId: string) => void
 
 }
 
@@ -29,7 +31,8 @@ const TodoList = React.memo((
         btnInfo,
         changeFilter,
         deleteTodos,
-        entityStatus
+        entityStatus,
+        changeStatus
 
     }: ToDoPropsType
 ) => {
@@ -45,11 +48,11 @@ const TodoList = React.memo((
     let tasksForToDoList = allTodolistTasks
 
     if (filter === 'active') {
-        tasksForToDoList = allTodolistTasks.filter(tasks => !tasks.isDone)
+        tasksForToDoList = allTodolistTasks.filter(tasks => tasks.status = TaskStatus.New)
     }
 
     if (filter === 'completed') {
-        tasksForToDoList = allTodolistTasks.filter(tasks => tasks.isDone)
+        tasksForToDoList = allTodolistTasks.filter(tasks => tasks.status = TaskStatus.Completed)
     }
 
 
@@ -86,10 +89,11 @@ const TodoList = React.memo((
 
                     tasksForToDoList.map((task) => {
                        return <Tasks
+                           changeStatus={changeStatus}
+                           task={task}
                            key={task.id}
                            id={task.id}
                            todoId={todoId}
-                           isDone={task.isDone}
                            title={task.title}/>
                     })
                     : <div>Нет тасок</div>
