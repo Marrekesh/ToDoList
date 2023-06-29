@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from "axios";
 import {LoginType} from "../pages/login/Login";
-
+import {TodoListType} from "../state/todo-reducer/todo-reducer";
 // const settings = {
 //     withCredentials: true,
 //     headers: {
@@ -96,12 +96,7 @@ export const todoListApi = {
 //     }
 // }
 
-export type TodoListType = {
-    addedDate: string
-    id: string
-    order: number
-    title: string
-}
+
 
 export type ResponseType<D = {}> = {
     resultCode: number

@@ -1,7 +1,56 @@
-import   {setTodolistsAC, ActionTodoType, TodoListDomainType} from "./todo-type";
+import {
+    setTodolistsAC,
+    ActionTodoType,
+    SetTodolistsActionType,
+    RemoveTodoActionType,
+    AddTodoActionType,
+    filterType,
+    ChangeFilterActionType,
+    ChangeEntityStatusActionType,
+    ClearDataType
+} from "./todo-type";
 
+import {RequestStatusType} from "../app-reducer/app-reducer";
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+
+
+
+// export type ArrayTaskType = Array<SingleTaskType>
+// export type ArrayBtnInfoType = Array<BtnInfoType>
+
+
+
+//TYPES
+
+export type TodoListDomainType = TodoListType & {
+    filter: filterType,
+    entityStatus: RequestStatusType
+}
+
+export type TodoListType = {
+    addedDate: string
+    id: string
+    order: number
+    title: string
+}
+
+//SLICE
 
 const initialState: Array<TodoListDomainType> = []
+
+const slice = createSlice({
+    name: 'todo',
+    initialState,
+    reducers: {
+        setTodoLists: (state, action: PayloadAction<{todoLists: TodoListType[]}>) => {
+            return action.payload.todoLists.map((item) => ({...item, filter: 'all', entityStatus: 'idle'}))
+        }
+    }
+
+})
+
+
+
 
 export const todoReducer = (state: Array<TodoListDomainType> = initialState, action: ActionTodoType): Array<TodoListDomainType> => {
     switch (action.type) {

@@ -4,7 +4,7 @@ import Button from '@mui/material/Button';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert, { AlertProps } from '@mui/material/Alert';
 import {useAppDispatch, useAppSelector} from "../../hooks/reduxHooks";
-import {setErrorAC} from "../../state/app-reducer/app-reducer";
+import {appActions} from "../../state/app-reducer/app-reducer";
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
     props,
@@ -22,7 +22,7 @@ export const CustomizedSnackbars = () =>  {
             return;
         }
 
-        dispatch(setErrorAC(null))
+        dispatch(appActions.setError({error: null}))
 
     };
 

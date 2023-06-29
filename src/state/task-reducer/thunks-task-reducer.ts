@@ -8,53 +8,53 @@ import {
     UpdateDomainTaskModelType,
     updateTaskAC
 } from "../task-reducer/task-type";
-import {setErrorAC, setStatusAC} from "../app-reducer/app-reducer";
+import {appActions} from "../app-reducer/app-reducer";
 import {AppRootStateType} from "../store/store";
 import {handleServerAppError, hendleServerNetworkError} from "../../utils/error-utils";
 
 export const fetchTasksThunk = (todolistId: string) => (dispatch: Dispatch) => {
-    dispatch(setStatusAC('loading'))
+    dispatch(appActions.setStatus({status: 'loading'}))
     todoListApi.getTasks(todolistId)
         .then((res) => {
             console.log(res)
             const tasks = res.data.items
             dispatch(setTaskAC(tasks, todolistId))
-            dispatch(setStatusAC('successed'))
+            dispatch(appActions.setStatus({status: 'successed'}))
         })
 }
 
 export const postTaskThunk = (title: string, todoId: string) => (dispatch: Dispatch) => {
-    dispatch(setStatusAC('loading'))
+    dispatch(appActions.setStatus({status: 'loading'}))
     todoListApi.postTask(title, todoId)
         .then(res => {
             console.log(res)
             if (res.data.resultCode === 0) {
                 dispatch(addTaskAction(res.data.data.item))
             } else if (res.data.messages.length) {
-                dispatch(setErrorAC(res.data.messages[0]))
+                dispatch(appActions.setError({error: res.data.messages[0]}))
             }
         })
-        .finally(() => dispatch(setStatusAC('successed')))
+        .finally(() => dispatch(appActions.setStatus({status: 'successed'})))
 
 }
 
 export const deleteTaskThunk = (taskId: string, todoListId: string) => (dispatch: Dispatch) => {
-    dispatch(setStatusAC('loading'))
+    dispatch(appActions.setStatus({status: 'loading'}))
     todoListApi.deleteTask(taskId, todoListId)
         .then(res => {
             if (res.status === 200) {
                 dispatch(removeTaskAction(taskId, todoListId))
-                dispatch(setStatusAC('successed'))
+                dispatch(appActions.setStatus({status: 'successed'}))
             }
         })
 }
 
 export const changeTaskTitle = (title: string, taskId: string, todoListId: string) => (dispatch: Dispatch) => {
-    dispatch(setStatusAC('loading'))
+    dispatch(appActions.setStatus({status: 'loading'}))
     return todoListApi.changeTaskTitle(title, taskId, todoListId)
         .then(res => {
             dispatch(changeTitleTaskAction(res.data.data.item.title, taskId, todoListId))
-            dispatch(setStatusAC('successed'))
+            dispatch(appActions.setStatus({status: 'successed'}))
         })
 }
 

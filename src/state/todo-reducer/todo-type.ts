@@ -1,6 +1,6 @@
 import {SetStatusType, SetErrorType} from "../app-reducer/app-reducer";
 import {RequestStatusType} from "../app-reducer/app-reducer";
-import {TodoListType} from "../../serverApi/todoListsApi";
+import {TodoListType} from "./todo-reducer";
 
 const { v4: uuidv4 } = require('uuid');
 
@@ -11,10 +11,8 @@ const { v4: uuidv4 } = require('uuid');
 //     entityStatus: RequestStatusType
 // }
 
-export type TodoListDomainType = TodoListType & {
-    filter: filterType,
-    entityStatus: RequestStatusType
-}
+
+
 
 
 // export type ArrayTaskType = Array<SingleTaskType>
