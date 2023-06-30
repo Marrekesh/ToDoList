@@ -4,10 +4,11 @@ import TodoList from "../../components/TodoList/TodoList";
 import React, {useCallback, useEffect, useState} from "react";
 import {useAppDispatch, useAppSelector} from "../../hooks/reduxHooks";
 import {deleteTodoThunk, fetchTodoListThunk, postTodoThunk} from "../../state/todo-reducer/thunks-todo";
-import {changeFilterTodoAction} from "../../state/todo-reducer/todo-type";
+// import {changeFilterTodoAction} from "../../state/todo-reducer/todo-type";
 import {Navigate} from "react-router-dom";
 import {TaskStatus} from "../../serverApi/todoListsApi";
 import {updateTaskTC} from "../../state/task-reducer/thunks-task-reducer";
+import {todoActions} from "../../state/todo-reducer/todo-reducer";
 
 const { v4: uuidv4 } = require('uuid');
 
@@ -56,7 +57,7 @@ export const TodoLists = () => {
     }, [dispatch])
 
     const changeFilter = useCallback((item: filterType, todolistId: string) => {
-        const action = changeFilterTodoAction(todolistId, item)
+        const action = todoActions.changeFilterTodo({id: todolistId, filter: item})
         dispatch(action)
     }, [dispatch])
 

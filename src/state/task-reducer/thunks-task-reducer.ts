@@ -1,9 +1,6 @@
 import { Dispatch } from "redux"
 import {TaskPriorities, TaskStatus, todoListApi, UpdateTaskModel} from "../../serverApi/todoListsApi"
 import {
-    setTaskAC,
-    removeTaskAction,
-    addTaskAction,
     changeTitleTaskAction,
     UpdateDomainTaskModelType,
     updateTaskAC
@@ -12,16 +9,18 @@ import {appActions} from "../app-reducer/app-reducer";
 import {AppRootStateType} from "../store/store";
 import {handleServerAppError, hendleServerNetworkError} from "../../utils/error-utils";
 
-export const fetchTasksThunk = (todolistId: string) => (dispatch: Dispatch) => {
-    dispatch(appActions.setStatus({status: 'loading'}))
-    todoListApi.getTasks(todolistId)
-        .then((res) => {
-            console.log(res)
-            const tasks = res.data.items
-            dispatch(setTaskAC(tasks, todolistId))
-            dispatch(appActions.setStatus({status: 'successed'}))
-        })
-}
+
+
+// export const fetchTasksThunk = (todolistId: string) => (dispatch: Dispatch) => {
+//     dispatch(appActions.setStatus({status: 'loading'}))
+//     todoListApi.getTasks(todolistId)
+//         .then((res) => {
+//             console.log(res)
+//             const tasks = res.data.items
+//             dispatch(setTaskAC(tasks, todolistId))
+//             dispatch(appActions.setStatus({status: 'successed'}))
+//         })
+// }
 
 export const postTaskThunk = (title: string, todoId: string) => (dispatch: Dispatch) => {
     dispatch(appActions.setStatus({status: 'loading'}))

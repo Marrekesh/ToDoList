@@ -1,17 +1,20 @@
 import { todoListApi } from "../../serverApi/todoListsApi"
-import {ActionTodoType, changeEntityStatusAction} from "./todo-type";
 import { Dispatch } from "redux"
-import {addTodoAction, deleteTodoAction, setTodolistsAC} from "./todo-type";
 import {appActions} from "../app-reducer/app-reducer";
+import {todoActions} from "./todo-reducer";
 
 
-export const postTodoThunk = (title: string) => (dispatch: Dispatch<ActionTodoType>) => {
+
+
+
+
+export const postTodoThunk = (title: string) => (dispatch: Dispatch) => {
     dispatch(appActions.setStatus({status: 'loading'}))
     todoListApi.postTodoLists(title)
         .then(res => {
             if (res.data.resultCode === 0) {
                 console.log(res)
-                dispatch(addTodoAction(res.data.data.item))
+                dispatch(todoActions.addTodoList({todoList: res.data.data.item}))
             } else if (res.data.messages.length) {
                 dispatch(appActions.setError({error: res.data.messages[0]}))
             }
@@ -20,19 +23,19 @@ export const postTodoThunk = (title: string) => (dispatch: Dispatch<ActionTodoTy
         .finally(() => dispatch(appActions.setStatus({status: 'successed'})))
 }
 
-export const deleteTodoThunk = (todolistId: string) => (dispatch: Dispatch<ActionTodoType>) => {
+export const deleteTodoThunk = (todolistId: string) => (dispatch: Dispatch) => {
     dispatch(appActions.setStatus({status: 'loading'}))
-    dispatch(changeEntityStatusAction(todolistId, "loading"))
+    dispatch(todoActions.changeEntityStatus({id: todolistId, entityStatus: "loading"}))
     todoListApi.deleteTodo(todolistId)
         .then(res => {
             if (res.status === 200)
-                dispatch(deleteTodoAction(todolistId))
+                dispatch(todoActions.removeTodoList({id: todolistId}))
                 dispatch(appActions.setStatus({status: 'successed'}))
-                dispatch(changeEntityStatusAction(todolistId, "idle"))
+                dispatch(todoActions.changeEntityStatus({id: todolistId, entityStatus: "idle"}))
         })
         .catch(error => {
             dispatch(appActions.setStatus({status: 'successed'}))
-            dispatch(changeEntityStatusAction(todolistId, "idle"))
+            dispatch(todoActions.changeEntityStatus({id: todolistId, entityStatus: "idle"}))
             dispatch(appActions.setError({error: error.message}))
         })
 
@@ -43,7 +46,7 @@ export const fetchTodoListThunk = (dispatch: Dispatch) => {
     todoListApi.getTodoLists()
         .then(res => {
             console.log(res)
-            dispatch(setTodolistsAC(res.data))
+            dispatch(todoActions.setTodoLists({todoLists: res.data}))
             dispatch(appActions.setStatus({status: 'successed'}))
         })
 }

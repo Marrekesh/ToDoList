@@ -10,6 +10,7 @@ import {useAppDispatch, useAppSelector} from "../../hooks/reduxHooks";
 import {postTaskThunk, fetchTasksThunk} from "../../state/task-reducer/thunks-task-reducer";
 import {RequestStatusType} from "../../state/app-reducer/app-reducer";
 import {TaskStatus} from "../../serverApi/todoListsApi";
+import {fetchTask} from "../../state/task-reducer/tasks-reducer";
 
 type ToDoPropsType = {
     todoId: string
@@ -72,7 +73,7 @@ const TodoList = React.memo((
     const deleteTodoHandler = () => deleteTodos(todoId)
 
     useEffect(()=> {
-        dispatch(fetchTasksThunk(todoId))
+        dispatch(fetchTask(todoId))
     }, [])
 
     return (

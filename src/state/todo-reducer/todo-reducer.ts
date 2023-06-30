@@ -1,26 +1,9 @@
-import {
-    setTodolistsAC,
-    ActionTodoType,
-    SetTodolistsActionType,
-    RemoveTodoActionType,
-    AddTodoActionType,
-    filterType,
-    ChangeFilterActionType,
-    ChangeEntityStatusActionType,
-    ClearDataType
-} from "./todo-type";
-
 import {RequestStatusType} from "../app-reducer/app-reducer";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
-
-
-// export type ArrayTaskType = Array<SingleTaskType>
-// export type ArrayBtnInfoType = Array<BtnInfoType>
-
-
-
 //TYPES
+
+export type filterType = 'all' | 'active' | 'completed'
 
 export type TodoListDomainType = TodoListType & {
     filter: filterType,
@@ -44,41 +27,39 @@ const slice = createSlice({
     reducers: {
         setTodoLists: (state, action: PayloadAction<{todoLists: TodoListType[]}>) => {
             return action.payload.todoLists.map((item) => ({...item, filter: 'all', entityStatus: 'idle'}))
+        },
+        addTodoList: (state, action: PayloadAction<{todoList: TodoListType}>) => {
+            const newTodo = {...action.payload.todoList, filter: 'all', entityStatus: 'idle'} as TodoListDomainType
+            state.unshift(newTodo)
+        },
+        removeTodoList: (state, action: PayloadAction<{id: string}>) => {
+            const index = state.findIndex((item) => item.id === action.payload.id)
+            if (index !== -1) state.splice(index, 1)
+        },
+        changeFilterTodo: (state, action:PayloadAction<{id: string, filter: filterType}>) => {
+            const index = state.findIndex((item) => item.id === action.payload.id)
+            if (index !== -1) state[index].filter = action.payload.filter
+        },
+        changeTitleTodo: (state, action:PayloadAction<{id: string, title: string}>) => {
+            const index = state.findIndex((item) => item.id === action.payload.id)
+            if (index !== -1) state[index].title = action.payload.title
+        },
+        changeEntityStatus: (state, action:PayloadAction<{id: string, entityStatus: RequestStatusType}>) => {
+            const index = state.findIndex((item) => item.id === action.payload.id)
+            if (index !== -1) state[index].entityStatus= action.payload.entityStatus
+        },
+        clearData: (state) => {
+            state.length = 0
         }
+
     }
 
 })
 
+export const todoReducer = slice.reducer
+export const todoActions = slice.actions
 
 
 
-export const todoReducer = (state: Array<TodoListDomainType> = initialState, action: ActionTodoType): Array<TodoListDomainType> => {
-    switch (action.type) {
-        case 'DELETE-TODO':
-            return state.filter(item => item.id !== action.id)
-        case 'ADD-TODO': {
-            // return [...state,
-            //     {id: action.todoId, title: action.title, filter: 'all', entityStatus: "idle", addedDate: 'kj', order: 2}
-            // ]
-            return [{...action.todoList, filter: 'all', entityStatus: 'idle'}, ...state]
-        }
-        case 'CHANGE-FILTER-TODO': {
-            return state.map(item => item.id === action.id ? {...item, filter: action.filter} : item)
-        }
-        case 'SET-TODOLISTS': {
-            return action.todoLists.map(tl => ({
-                ...tl,
-                filter: 'all',
-                entityStatus: "idle"
-            }))
-        }
-        case 'CHANGE-ENTITY-TODO': {
-            return state.map(todo => todo.id === action.id ? {...todo, entityStatus: action.entityStatus}: todo)
-        }
-        case "CLEAR-DATA":
-            return []
-        default:
-            return state
-    }
-}
+
 

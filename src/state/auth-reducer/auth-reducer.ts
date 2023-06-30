@@ -3,10 +3,10 @@ import {Dispatch} from "redux";
 import {LoginType} from "../../pages/login/Login";
 import {authApi} from "../../serverApi/todoListsApi";
 import {handleServerAppError, hendleServerNetworkError} from "../../utils/error-utils";
-import {clearDataAction} from "../todo-reducer/todo-type";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {AppThunk} from "../store/store";
 import {appActions} from "../app-reducer/app-reducer";
+import {todoActions} from "../todo-reducer/todo-reducer";
 
 type LoginFlagType = {
     isLoggedIn: boolean
@@ -75,7 +75,7 @@ export const logOutThunk = (): AppThunk => async (dispatch: Dispatch) => {
         console.log(response)
         if (response.data.resultCode === 0) {
             dispatch(authActions.setIsLoggedIn({ isLoggedIn: false }))
-            dispatch(clearDataAction())
+            dispatch(todoActions.clearData())
             dispatch(appActions.setStatus({status: 'successed'}))
         } else {
             handleServerAppError(response.data, dispatch)

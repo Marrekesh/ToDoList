@@ -1,4 +1,4 @@
-import {AddTodoActionType, RemoveTodoActionType, SetTodolistsActionType, ClearDataType} from "../todo-reducer/todo-type";
+
 import {SetStatusType} from "../app-reducer/app-reducer";
 import {RequestStatusType} from "../app-reducer/app-reducer";
 import {TaskPriorities, TaskStatus, TaskType, UpdateTaskModel} from "../../serverApi/todoListsApi";
@@ -57,24 +57,13 @@ export type UpdateTaskType = {
 export type ActionTaskType = AddTaskType
     | RemoveTaskType
     | ChangeTaskChecked
-    | AddTodoActionType
-    | RemoveTodoActionType
     | ChangeTitleTaskType
-    | SetTodolistsActionType
     | SetTasksActionType
     | SetStatusType
-    | ClearDataType
     | UpdateTaskType
 
 // actions task creator
 
-export const addTaskAction = (task: TaskType): AddTaskType => {
-    return {type: 'ADD-TASK', task}
-}
-
-export const removeTaskAction = (id: string, todoId: string): RemoveTaskType => {
-    return {type: 'REMOVE-TASK', id, todoId}
-}
 
 // export const changeTaskChecked = (id: string, todoId: string): ChangeTaskChecked => {
 //     return {type: 'CHANGE-TASK-CHECKED', id, todoId}
@@ -82,9 +71,6 @@ export const removeTaskAction = (id: string, todoId: string): RemoveTaskType => 
 
 export const changeTitleTaskAction = (title: string, id: string, todoId: string): ChangeTitleTaskType => {
     return {type: 'CHANGE-TASK-TITLE', title, id, todoId}
-}
-export const setTaskAC = (tasks: TaskType[], todolistId: string): SetTasksActionType => {
-    return {type: 'SET-TASKS', tasks, todolistId}
 }
 
 export const updateTaskAC = (todoId: string, taskId: string, domainModel: UpdateDomainTaskModelType): UpdateTaskType => {
