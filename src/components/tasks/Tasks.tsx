@@ -3,8 +3,8 @@ import React, {ChangeEvent, useCallback} from 'react';
 import {Checkbox, IconButton} from "@mui/material";
 import EditSpan from "../editSpan/EditSpan";
 import {Delete} from "@mui/icons-material";
+import {removeTask, updateTask} from "../../state/task-reducer/tasks-reducer";
 
-import {changeTaskTitle, deleteTaskThunk} from '../../state/task-reducer/thunks-task-reducer';
 import {useAppDispatch} from "../../hooks/reduxHooks";
 import {TaskStatus, TaskType} from "../../serverApi/todoListsApi";
 
@@ -28,13 +28,13 @@ const Tasks = React.memo(({id, todoId, task, title, changeStatus}: TaskPropType)
 
 
     const removeTaskHandler = () => {
-        dispatch(deleteTaskThunk(id, todoId))
+        dispatch(removeTask({taskId: id, todoListId: todoId}))
     }
 
     const changStatusEditSpan = useCallback((title: string) => {
         // const action = changeTitleTaskAction(title, id, todoId)
         // dispatch(action)
-        dispatch(changeTaskTitle(title, id, todoId))
+        dispatch(updateTask({taskId:id, domainModel: {title}, todolistId:todoId}))
     },[dispatch, id])
 
     return <div key={id}>

@@ -7,8 +7,9 @@ import {deleteTodoThunk, fetchTodoListThunk, postTodoThunk} from "../../state/to
 // import {changeFilterTodoAction} from "../../state/todo-reducer/todo-type";
 import {Navigate} from "react-router-dom";
 import {TaskStatus} from "../../serverApi/todoListsApi";
-import {updateTaskTC} from "../../state/task-reducer/thunks-task-reducer";
 import {todoActions} from "../../state/todo-reducer/todo-reducer";
+import {updateTask} from "../../state/task-reducer/tasks-reducer";
+
 
 const { v4: uuidv4 } = require('uuid');
 
@@ -65,9 +66,8 @@ export const TodoLists = () => {
         dispatch(deleteTodoThunk(todolistId))
     }, [dispatch])
 
-    const changeStatus = useCallback(function (id: string, status: TaskStatus, todolistId: string) {
-        const thunk = updateTaskTC(id, {status}, todolistId)
-        dispatch(thunk)
+    const changeStatus = useCallback(function (taskId: string, status: TaskStatus, todolistId: string) {
+        dispatch(updateTask({taskId, domainModel: {status}, todolistId }))
     }, [])
 
     if (!isLoggedIn) {

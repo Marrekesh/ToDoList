@@ -1,5 +1,9 @@
-import {RequestStatusType} from "../app-reducer/app-reducer";
+import {appActions, RequestStatusType} from "../app-reducer/app-reducer";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {Dispatch} from "redux";
+import {todoListApi} from "../../serverApi/todoListsApi";
+import {createAppAsyncThunk} from "../../utils/createAppAthunkThunk";
+import {hendleServerNetworkError} from "../../utils/error-utils";
 
 //TYPES
 
@@ -52,13 +56,37 @@ const slice = createSlice({
             state.length = 0
         }
 
+    },
+    extraReducers: (builder) => {
+        builder
+            .addCase(fetchTodoList.fulfilled, (state, action) => {
+
+            })
     }
 
 })
 
+export const fetchTodoList = createAppAsyncThunk<{ todoLists: TodoListType[]}, void>(
+    'todo/fetchTodoList', async (arg, thunkAPI) => {
+        const {dispatch, rejectWithValue} = thunkAPI
+
+        try {
+            dispatch(appActions.setStatus({status: 'loading'}))
+            const response = await todoListApi.getTodoLists()
+
+            return {todoLists: response.data}
+        } catch (e) {
+            hendleServerNetworkError(e, dispatch);
+            return rejectWithValue(null)
+        } finally {
+            dispatch(appActions.setStatus({status: 'successed'}))
+        }
+    }
+)
+
 export const todoReducer = slice.reducer
 export const todoActions = slice.actions
-
+export const toDoThunk =  {fetchTodoList}
 
 
 

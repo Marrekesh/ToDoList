@@ -7,10 +7,9 @@ import { Delete } from '@mui/icons-material'
 import { IconButton } from '@mui/material'
 import c from "./todoList.module.css";
 import {useAppDispatch, useAppSelector} from "../../hooks/reduxHooks";
-import {postTaskThunk, fetchTasksThunk} from "../../state/task-reducer/thunks-task-reducer";
 import {RequestStatusType} from "../../state/app-reducer/app-reducer";
 import {TaskStatus} from "../../serverApi/todoListsApi";
-import {fetchTask} from "../../state/task-reducer/tasks-reducer";
+import {fetchTask, addTask} from "../../state/task-reducer/tasks-reducer";
 
 type ToDoPropsType = {
     todoId: string
@@ -42,7 +41,7 @@ const TodoList = React.memo((
 
 
     const addTaskHandler = useCallback((title: string) => {
-        dispatch(postTaskThunk(title, todoId))
+        dispatch(addTask({title, todoId}))
     }, [dispatch, todoId])
 
     let allTodolistTasks = tasks
