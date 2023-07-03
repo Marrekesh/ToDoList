@@ -1,7 +1,7 @@
 
 import {TaskPriorities, TaskStatus, TaskType, todoListApi, UpdateTaskModel} from "../../serverApi/todoListsApi";
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {todoActions} from "../todo-reducer/todo-reducer";
+import {todoActions, toDoThunk} from "../todo-reducer/todo-reducer";
 import {Dispatch} from "redux";
 import {appActions} from "../app-reducer/app-reducer";
 import {handleServerAppError, hendleServerNetworkError} from "../../utils/error-utils";
@@ -52,7 +52,7 @@ const slice = createSlice({
             .addCase(removeTask.fulfilled, (state, action) => {
                 let taskForCurrentTodolist = state[action.payload.todoListId]
                 const index = taskForCurrentTodolist.findIndex(todo => todo.id === action.payload.taskId)
-                if (index !== -1) state.taskForCurrentTodolist.splice(index, 1)
+                if (index !== -1) taskForCurrentTodolist.splice(index, 1)
             })
             .addCase(updateTask.fulfilled, (state, action) => {
                 let tasks = state[action.payload.todolistId]
@@ -60,13 +60,13 @@ const slice = createSlice({
                 if (index !== -1 ) tasks[index] = {...tasks[index], ...action.payload.domainModel}
             })
             /// From toDo
-            .addCase(todoActions.addTodoList, (state, action) => {
+            .addCase(toDoThunk.addTodoList.fulfilled, (state, action) => {
                 state[action.payload.todoList.id] = []
             })
-            .addCase(todoActions.removeTodoList, (state, action) => {
-                delete state[action.payload.id]
+            .addCase(toDoThunk.removeTodoList.fulfilled, (state, action) => {
+                delete state[action.payload.todolistId]
             })
-            .addCase(todoActions.setTodoLists, (state, action) => {
+            .addCase(toDoThunk.fetchTodoList.fulfilled, (state, action) => {
                 action.payload.todoLists.forEach((tl) => {
                     state[tl.id] = []
                 })
@@ -134,10 +134,9 @@ export const removeTask = createAppAsyncThunk<{taskId: string, todoListId: strin
             dispatch(appActions.setStatus({status: 'loading'}))
             const response = await todoListApi.deleteTask(arg.taskId, arg.todoListId)
             if (response.data.resultCode === 0) {
-                const taskId = response.data.id
-                const todoListId = response.data.todoId
+                console.log(response)
                 dispatch(appActions.setStatus({status: "successed"}))
-                return {taskId, todoListId}
+                return arg
 
             } else {
                 hendleServerNetworkError(response.data.messages, dispatch);

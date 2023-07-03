@@ -13,13 +13,11 @@
 //     [key: string]: ArrayTaskType
 // }
 // import {fetchTodoListThunk} from "./todo-reducer/todo-reducer";
-import { fetchTodoListThunk } from "./todo-reducer/thunks-todo";
 // const { v4: uuidv4 } = require('uuid');
-// export type TodoType = {
-//     id: string
-//     title: string
-//     filter: filterType
-// }
+export type TodoType = {
+    id: string
+    title: string
+}
 //
 //
 // // export type ArrayTaskType = Array<SingleTaskType>

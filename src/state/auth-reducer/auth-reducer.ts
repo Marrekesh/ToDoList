@@ -49,7 +49,6 @@ export const loginThunk = (data: LoginType): AppThunk => async (dispatch: Dispat
 export const meThunk = (): AppThunk => async (dispatch: Dispatch) => {
     try {
         const response = await authApi.me()
-        console.log(response)
         if (response.data.resultCode === 0) {
             dispatch(authActions.setIsLoggedIn({ isLoggedIn: true }))
             dispatch(appActions.setStatus({status: 'successed'}))

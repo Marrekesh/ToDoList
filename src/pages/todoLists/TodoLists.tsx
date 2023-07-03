@@ -3,11 +3,10 @@ import AddItemForm from "../../components/addItemForm/AddItemForn";
 import TodoList from "../../components/TodoList/TodoList";
 import React, {useCallback, useEffect, useState} from "react";
 import {useAppDispatch, useAppSelector} from "../../hooks/reduxHooks";
-import {deleteTodoThunk, fetchTodoListThunk, postTodoThunk} from "../../state/todo-reducer/thunks-todo";
 // import {changeFilterTodoAction} from "../../state/todo-reducer/todo-type";
 import {Navigate} from "react-router-dom";
 import {TaskStatus} from "../../serverApi/todoListsApi";
-import {todoActions} from "../../state/todo-reducer/todo-reducer";
+import {todoActions, toDoThunk} from "../../state/todo-reducer/todo-reducer";
 import {updateTask} from "../../state/task-reducer/tasks-reducer";
 
 
@@ -50,11 +49,11 @@ export const TodoLists = () => {
     useEffect(() => {
         console.log('todolists')
         if (!isLoggedIn) return
-        dispatch(fetchTodoListThunk)
+        dispatch(toDoThunk.fetchTodoList())
     }, [])
 
     const addTodoList = useCallback((title: string) => {
-        dispatch(postTodoThunk(title))
+        dispatch(toDoThunk.addTodoList({title}))
     }, [dispatch])
 
     const changeFilter = useCallback((item: filterType, todolistId: string) => {
@@ -63,7 +62,7 @@ export const TodoLists = () => {
     }, [dispatch])
 
     const deleteTodos = useCallback((todolistId: string) => {
-        dispatch(deleteTodoThunk(todolistId))
+        dispatch(toDoThunk.removeTodoList({todolistId}))
     }, [dispatch])
 
     const changeStatus = useCallback(function (taskId: string, status: TaskStatus, todolistId: string) {
