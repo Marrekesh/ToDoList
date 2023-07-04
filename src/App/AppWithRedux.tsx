@@ -27,6 +27,7 @@ const { v4: uuidv4 } = require('uuid');
 
 function AppWithRedux() {
 
+    console.log('1')
     const status = useAppSelector(state => state.app.status)
     const isInitialized = useAppSelector(state => state.app.isInitialized)
     const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
@@ -38,17 +39,20 @@ function AppWithRedux() {
     }
 
     useEffect(() => {
+        console.log('2')
         dispatch(meThunk())
     }, [])
 
 
     if (!isInitialized) {
+        console.log('5')
         return <div
             style={{position: 'fixed', top: '30%', textAlign: 'center', width: '100%'}}>
             <CircularProgress/>
         </div>
     }
 
+    console.log('3')
     return (
         <div className="App">
             <AppBar position="static">

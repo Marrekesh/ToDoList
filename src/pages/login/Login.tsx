@@ -65,6 +65,7 @@ export const Login = () => {
         onSubmit: (values) => {
             dispatch(loginThunk(values))
             formik.resetForm()
+
         }
     })
     console.log(isLoggedIn)

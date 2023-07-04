@@ -19,6 +19,7 @@ const slice = createSlice({
     },
     reducers: {
         setIsLoggedIn: (state: LoginFlagType, action: PayloadAction<{ isLoggedIn: boolean }>) => {
+            console.log('6')
             state.isLoggedIn = action.payload.isLoggedIn
         }
     }
@@ -47,6 +48,7 @@ export const loginThunk = (data: LoginType): AppThunk => async (dispatch: Dispat
 }
 
 export const meThunk = (): AppThunk => async (dispatch: Dispatch) => {
+    console.log('4')
     try {
         const response = await authApi.me()
         if (response.data.resultCode === 0) {
